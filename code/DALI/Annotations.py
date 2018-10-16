@@ -11,7 +11,7 @@ GABRIEL MESEGUER-BROCAL 2018
 """
 import copy
 import numpy as np
-import utilities as ut
+import DALI.utilities as ut
 
 
 def unroll(annot):
@@ -101,19 +101,19 @@ class Annotations(object):
     It contains some method for transformin the annot representation."""
 
     def __init__(self, i):
-        self.info = {'id': i, 'artist': None, 'title': None, 'metadata': None,
-                     'audio': {'url': None, 'working': None, 'path': None},
-                     'scores': {'NCC': None, 'manual': None},
-                     'dataset_version': None, 'ground-truth': None}
-        self.annotations = {'type': None, 'annot': None,
-                            'annot_param': {'fr': None, 'offset': None}}
+        self.info = {'id': i, 'artist': 'None', 'title': 'None',
+                     'audio': {'url': 'None', 'working': False, 'path': 'None'},
+                     'metadata': {}, 'scores': {'NCC': 0.0, 'manual': 0.0},
+                     'dataset_version': 0.0, 'ground-truth': 'None'}
+        self.annotations = {'type': 'None', 'annot': {},
+                            'annot_param': {'fr': 0.0, 'offset': 0.0}}
         self.errors = None
         return
 
     def read_json(self, fname):
         """Read the annots from a json file."""
         data = ut.read_json(fname)
-        if (ut.check_structure(self.info, data['info']) and
+        if(ut.check_structure(self.info, data['info']) and
            ut.check_structure(self.annotations, data['annotations'])):
             self.info = data['info']
             self.annotations = data['annotations']
@@ -132,8 +132,8 @@ class Annotations(object):
         representation (hierarchical)."""
         try:
             if self.annotations['type'] == 'horizontal':
-                self.annotations['type'] = 'vertical'
                 self.annotations['annot'] = roll(self.annotations['annot'])
+                self.annotations['type'] = 'vertical'
             else:
                 print('Annot are already in a horizontal format')
         except Exception as e:
@@ -145,8 +145,8 @@ class Annotations(object):
         annotations (indivual levels)."""
         try:
             if self.annotations['type'] == 'vertical':
-                self.annotations['type'] = 'horizontal'
                 self.annotations['annot'] = unroll(self.annotations['annot'])
+                self.annotations['type'] = 'horizontal'
             else:
                 print('Annot are already in a vertical format')
         except Exception as e:

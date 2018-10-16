@@ -52,15 +52,6 @@ def check_file(fl, print_error=True):
     return output
 
 
-def read_gzip(fl, print_error=False):
-    """Read gzip file."""
-    output = None
-    if check_file(fl, print_error):
-        with gzip.open(fl, 'r') as f:
-            output = pickle.load(f)
-    return output
-
-
 def list_files_from_folder(directory, extension, print_error=True):
     """Return all the files with a specific extension for a given folder."""
     files = []
@@ -75,10 +66,13 @@ def list_files_from_folder(directory, extension, print_error=True):
 
 
 def write_in_gzip(pth, name, data, print_error=False):
-    """Write data in a gzip file."""
+    """Write data in a gzip file"""
     if check_directory(pth, print_error):
         save_name = os.path.join(pth, name)
-        gz = gzip.open(save_name + '.gz', 'w')
+        try:
+            gz = gzip.open(save_name + '.gz', 'wb')
+        except Exception as e:
+            gz = gzip.open(save_name + '.gz', 'w')
         gz.write(pickle.dumps(data, protocol=2))
         gz.close()
     return
@@ -88,17 +82,38 @@ def write_in_json(pth, name, data, print_error=False):
     """Write data in a json file"""
     if check_directory(pth, print_error):
         save_name = os.path.join(pth, name)
-        with open(save_name + '.json', 'w') as outfile:
-            json.dump(data, outfile)
+        try:
+            with open(save_name + '.json', 'wb') as outfile:
+                json.dump(data, outfile)
+        except Exception as e:
+            with open(save_name + '.json', 'w') as outfile:
+                json.dump(data, outfile)
     return
+
+
+def read_gzip(fl, print_error=False):
+    """Read gzip file"""
+    output = None
+    if check_file(fl, print_error):
+        try:
+            with gzip.open(fl, 'rb') as f:
+                output = pickle.load(f)
+        except Exception as e:
+            with gzip.open(fl, 'r') as f:
+                output = pickle.load(f)
+    return output
 
 
 def read_json(fl, print_error=False):
     """Read json file"""
     output = None
     if check_file(fl, print_error):
-        with open(fl, 'r') as outfile:
-            output = json.load(outfile)
+        try:
+            with open(fl, 'rb') as outfile:
+                output = json.load(outfile)
+        except Exception as e:
+            with open(fl, 'r') as outfile:
+                output = json.load(outfile)
     return output
 
 
@@ -133,11 +148,16 @@ def roll(lower, upper):
 def get_text(text, output=[], m=False):
     """Recursive function for having the needed text for the unroll function.
     """
+    f = lambda x: isinstance(x, unicode) or isinstance(x, str)
+    try:
+        f('whatever')
+    except Exception as e:
+        f = lambda x: isinstance(x, str)
     if isinstance(text, list):
         tmp = [get_text(i['text'], output) for i in text]
-        if isinstance(tmp[0], unicode) or isinstance(tmp[0], str):
+        if f(tmp[0]):
                 output.append(''.join(tmp))
-    elif isinstance(text, unicode) or isinstance(text, str):
+    elif f(text):
         output = text
     return output
 
