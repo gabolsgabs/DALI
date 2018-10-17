@@ -14,7 +14,7 @@ The DALI dataset is presented as a set of ***.gz*** files. For working with it w
 
 ## Versions:
 
-Go to [here](https://github.com/gabolsgabs/DALI/blob/master/versions/)
+Go to [version](https://github.com/gabolsgabs/DALI/blob/master/versions/)
 
 ## TUTORIAL:
 
