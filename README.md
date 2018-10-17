@@ -8,18 +8,20 @@
 You can find a detailed explanation of how DALI has been created at:
 ***[Meseguer-Brocal_2018]*** [G. Meseguer-Brocal, A. Cohen-Hadria and G. Peeters. DALI: a large Dataset of synchronized Audio, LyrIcs and notes, automatically created using teacher-student machine learning paradigm. In ISMIR Paris, France, 2018.](http://ismir2018.ircam.fr/doc/pdfs/35_Paper.pdf)
 
-The DALI dataset is presented as a set of ***.gz*** files. For working with it we provide a small python lybrary than can be installed in your python/virtualenv. Here's an example of the kind of informatio DALI contains:
+Here's an example of the kind of information DALI contains:
 
 ![alt text][Example]
 
+ To work with DALI we provide a small python package than can be installed in your python or virtualenv.
+
 ## Versions:
 
-Go to [version](https://github.com/gabolsgabs/DALI/blob/master/versions/)
+For the different versions go to [version](https://github.com/gabolsgabs/DALI/blob/master/versions/)
 
 ## TUTORIAL:
 
 ### Installation.
-Clone this repository, go to the folder DALI/code and there run:
+Clone this repository, go to folder DALI/code and run:
 
   >  pip install .
 
@@ -39,13 +41,13 @@ Requirements: **numpy**
 
 DALI is presented as a set of **gz** files.
 Each one contains the annotations of a particular song.
-We use an unique id for each entry.
+We use a unique id for each entry.
 Once a DALI version is donwloaded you can load it as follow:
 
     import DALI
     dali = DALI.main.get_the_DALI_dataset('path_to_dali', skip=[], keep=[])
 
-This function can be also used to load a subset of the DALI dataset by providing the ids of the entries you either want to **skip** or to **keep**.
+This function can also be used to load a subset of the DALI dataset by providing the ids of the entries you either want to **skip** or to **keep**.
 
 **NOTE**: Loading DALI might take some minutes depending on your computer and python version.
 
@@ -54,7 +56,7 @@ Each DALI version contains a DALI_INFO.gz:
     info = DALI.main.get_info('path_to_dali/info/DALI_INFO.gz')
     print(info[0]) -> array(['DALI_ID', 'NAME', 'YOUTUBE', 'WORKING'])
 
-This file connnets the unique DALI id with the artist_name-song_tile, the url to youtube and a bool that says if the youtube link is working or not.  
+This file connects the unique DALI id with the artist_name-song_tile, the url to youtube and a bool that says if the youtube link is working or not.  
 
 <!--- This file is updated with -->
 
@@ -94,7 +96,7 @@ Annotations are in:
 > entry.annotations['annot']
 
 and they can be presented in two format: 'horizontal' or 'vertical'.
-You can easily change the formart using the functions:
+You can easily change the format using the functions:
 
       entry.horizontal2vertical()
       entry.vertical2horizontal()
@@ -114,7 +116,7 @@ Each level contains a list of annotation where each element has:
                      'index': 0} # link with the upper level. For example, index 0 at the 'words' level means that that particular word below to first line ([0]). The paragraphs level has no index key.
 
 #### Vertical.
-In this format the different level of granularity are hierarchically connected:
+In this format the different levels of granularity are hierarchically connected:
 
       entry.annotations['type'] --> 'vertical'
       entry.annotations['annot'].keys() --> ['hierarchical']
@@ -126,7 +128,7 @@ Each element of the list is a paragraph.
                        'time': [12.534, 41.471500000000006], # the begining and end of the time segment.
                        'text': [line_0, line_1, ..., line_n]}
 
-where 'text' containes all the lines of the paragraph. Each line follows the same format:
+where 'text' contains all the lines of the paragraph. Each line follows the same format:
 
       lines_1paragraph = my_annot[0]['text']
       lines_1paragraph[0] --> {'freq': [...], 'time': [...],
@@ -138,7 +140,7 @@ again, each word contains all the notes for that word to be sung:
       words_1line_1paragraph[0] --> {'freq': [...], 'time': [...],
                                      'text': [note_0, note_1, ..., note_n]}
 
-Only the deeper level has directly the text information.
+Only the deepest level directly has the text information.
 
       notes_1word_1line_1paragraph = words_1line_1paragraph[0]['text']
       notes_1word_1line_1paragraph[0] --> {'freq': [...], 'time': [...],
