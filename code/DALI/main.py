@@ -18,26 +18,28 @@ def generator_files_skip(file_names, skip=[]):
             yield ut.read_gzip(fl)
 
 
-def generator_files_in(file_names, in_list=[]):
+def generator_files_in(file_names, keep=[]):
     """Generator with all the file to read.
-    It reads only the files in the in_list ids list"""
+    It reads only the files in the keep ids list"""
     for fl in file_names:
-        if fl.split('/')[-1].rstrip('.gz') in in_list:
-            yield ut.read_gzip(fl)
+        if fl.split('/')[-1].rstrip('.gz') in keep:
+            yield ut.read_gzip(fl, print_error=True)
 
 
-def generator_folder(folder_pth, skip=[], in_list=[]):
+def generator_folder(folder_pth, skip=[], keep=[]):
     """Create the final Generator with all the files."""
-    if len(in_list) > 0:
-        return generator_files_in(ut.get_files_path(folder_pth), in_list)
+    if len(keep) > 0:
+        return generator_files_in(ut.get_files_path(folder_pth,
+                                                    print_error=True), keep)
     else:
-        return generator_files_skip(ut.get_files_path(folder_pth), skip)
+        return generator_files_skip(ut.get_files_path(folder_pth,
+                                                      print_error=True), skip)
 
 
-def get_the_DALI_dataset(pth, skip=[], in_list=[]):
+def get_the_DALI_dataset(pth, skip=[], keep=[]):
     """Load the whole DALI dataset. It can load only a subset of the dataset
     by providing either the ids to skip or the ids that to load."""
-    args = (pth, skip, in_list)
+    args = (pth, skip, keep)
     return {song.info['id']: song for song in generator_folder(*args)}
 
 
@@ -46,13 +48,12 @@ def get_an_entry(fl_pth):
     return ut.read_gzip(fl_pth)
 
 
-def get_info(pth):
+def get_info(dali_info_file):
     """Read the DALI INFO file with ['DALI_ID', 'YOUTUBE_ID', 'WORKING']
     """
     info = None
     try:
-        info = ut.read_json([i for i in get_files_path(pth, '*.json')
-                             if 'DALI_INFO' in i][0])
+        info = ut.read_gzip(dali_info_file, print_error=True)
     except Exception as e:
         print('ERROR: not DALI_INFO in your folder')
     return info

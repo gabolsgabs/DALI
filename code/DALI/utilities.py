@@ -9,15 +9,16 @@ import copy
 import glob
 import gzip
 import json
+import numpy as np
 import os
 import pickle
 
 # ------------------------ READING INFO ----------------
 
 
-def get_files_path(pth, ext='*.gz'):
+def get_files_path(pth, ext='*.gz', print_error=False):
     """Get all the files with a extension for a particular path."""
-    return list_files_from_folder(pth, extension=ext, print_error=False)
+    return list_files_from_folder(pth, extension=ext, print_error=print_error)
 
 
 def check_absolute_path(directory, print_error=True):
@@ -26,7 +27,7 @@ def check_absolute_path(directory, print_error=True):
     if os.path.isabs(directory):
         output = True
     elif print_error:
-        print("ERROR: Please send an absolute path")
+        print("ERROR: Please use an absolute path")
     return output
 
 
