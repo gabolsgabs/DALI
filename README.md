@@ -1,5 +1,5 @@
 
-[DALI]: ./images/DALI.png
+[DALI]: ./images/DALI_small.png
 [Example]: ./images/Example.png
 
 
@@ -169,7 +169,6 @@ Imagine you want to work only with the 3 paragraph. You can easily retrieve all 
       text_line = DALI.utilities.get_text(my_line)
       words_in_line, _ = DALI.utilities.unroll(my_line, depth=0, output=[])
       notes_in_line, _ = DALI.utilities.unroll(my_line, depth=1, output=[])
-
 
 
 
