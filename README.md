@@ -14,21 +14,7 @@ The DALI dataset is presented as a set of ***.gz*** files. For working with it w
 
 ## Versions:
 
-- **Version 1.0**:
-  - can be donwloaded at: [V1.0](link_broken)
-  <!--- For having the pass please send a mail to dali.dataset@gmail.com with the agree -->
-  - It is definied at ***DALI/versions/v1.0.md***,
-  - [Here's the paper](http://ismir2018.ircam.fr/doc/pdfs/35_Paper.pdf)
-  - and the citation:
-
-        @inproceedings{Meseguer-Brocal_2018,
-                       Author = {Meseguer-Brocal, Gabriel and Cohen-Hadria, Alice and Gomez and Peeters Geoffroy},
-                       Title = {DALI: a large Dataset of synchronized Audio, LyrIcs and notes, automatically created using teacher-student machine learning paradigm.},  
-                       Booktitle = {Proceedings of the 19th International Society for Music Information Retrieval Conference},
-                       Organization = {ISMIR},
-                       Year = {2018}}
-
-
+Go to [here](https://github.com/gabolsgabs/DALI/blob/master/versions/)
 
 ## TUTORIAL:
 
