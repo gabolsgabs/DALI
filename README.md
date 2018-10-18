@@ -129,7 +129,7 @@ Each level contains a list of annotation where each element has:
 
 This format is ment to be use when you want to work with each level indivually.
 
-Example 1: recovering the main vocal melody. Let's used the extra function DALI.Annotations.annot2vector() that transforms the annotations into a vector. There are two types of vector:
+> Example 1: recovering the main vocal melody. Let's used the extra function DALI.Annotations.annot2vector() that transforms the annotations into a vector. There are two types of vector:
 
 - type='voice': each frame has a value 1 or 0 for voice or not voice.
 - type='notes': each frame has the freq value of the main vocal melody.
@@ -146,7 +146,7 @@ Example 1: recovering the main vocal melody. Let's used the extra function DALI.
       melody = DALI.Annotations.annot2vector(my_annot, time_resolution, end_of_the_song, win_bin, hop_bin, type='notes')
 
 
-Example 2: find the audio frames that define each paragraph. Let's used the other extra function DALI.Annotations.annot2frames() that transforms time in seconds into time in frames.
+> Example 2: find the audio frames that define each paragraph. Let's used the other extra function DALI.Annotations.annot2frames() that transforms time in seconds into time in frames.
 
       my_annot = entry.annotations['annot']['paragraphs']
       paragraphs = [i['time'] for i in annot2frames(my_annot, time_resolution)]
