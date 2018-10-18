@@ -1,0 +1,3 @@
+Copyright © Ircam 2018
+This package is distributed under the Academic Free License ("AFL") v. 3.0.
+For more information read the LICENSE.txt

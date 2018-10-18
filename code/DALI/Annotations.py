@@ -50,11 +50,12 @@ def annot2frames(annot, time_r, type='horizontal', depth=3):
     format [annot[paragraph_i]] or line [annot[paragraph_i]['text'][line_i]].
     """
     output = []
+    tmp = copy.deepcopy(annot)
     try:
         if type == 'horizontal':
-            output = ut.sample(annot, time_r)
+            output = ut.sample(tmp, time_r)
         elif type == 'vertical':
-            vertical = [ut.sample(ut.unroll(annot, [], depth=depth)[0], time_r)
+            vertical = [ut.sample(ut.unroll(tmp, [], depth=depth)[0], time_r)
                         for i in range(depth+1)][::-1]
             for i in range(len(vertical[:-1])):
                 if i == 0:
@@ -74,6 +75,9 @@ def annot2vector(annot, time_r, dur, win_bin, hop_bin, type='voice'):
         - dur (float): duration of the vector (for adding zeros).
         - win_bin (int): window size in bins for sampling the vector.
         - hop_bin (int): hope size in bins for sampling the vector.
+        - type (str):
+            'voice': each frame has a value 1 or 0 for voice or not voice.
+            'notes': each frame has the freq value of the main vocal melody.
     """
     output = []
     try:
@@ -152,3 +156,15 @@ class Annotations(object):
         except Exception as e:
             print('ERROR: unknow type of annotations')
         return
+
+    def is_horizontal(self):
+        output = False
+        if self.annotations['type'] == 'horizontal':
+            output = True
+        return output
+
+    def is_vertical(self):
+        output = False
+        if self.annotations['type'] == 'vertical':
+            output = True
+        return output

@@ -10,8 +10,9 @@ DALI definition following the standard presented at:
   - and the citation:
 
         @inproceedings{Meseguer-Brocal_2018,
-                       Author = {Meseguer-Brocal, Gabriel and Cohen-Hadria, Alice and Gomez and Peeters Geoffroy},
-                       Title = {DALI: a large Dataset of synchronized Audio, LyrIcs and notes, automatically created using teacher-student machine learning paradigm.},  
-                       Booktitle = {Proceedings of the 19th International Society for Music Information Retrieval Conference},
-                       Organization = {ISMIR},
-                       Year = {2018}}
+        Author = {Meseguer-Brocal, Gabriel and Cohen-Hadria, Alice and Gomez and Peeters Geoffroy},
+        Booktitle = {19th International Society for Music Information Retrieval Conference},
+        Editor = {ISMIR},
+        Month = {September },
+        Title = {DALI: a large Dataset of synchronized Audio, LyrIcs and notes, automatically created using teacher-student machine learning paradigm.},
+        Year = {2018}}

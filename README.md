@@ -8,6 +8,17 @@
 You can find a detailed explanation of how DALI has been created at:
 ***[Meseguer-Brocal_2018]*** [G. Meseguer-Brocal, A. Cohen-Hadria and G. Peeters. DALI: a large Dataset of synchronized Audio, LyrIcs and notes, automatically created using teacher-student machine learning paradigm. In ISMIR Paris, France, 2018.](http://ismir2018.ircam.fr/doc/pdfs/35_Paper.pdf)
 
+Cite this paper:
+
+      @inproceedings{Meseguer-Brocal_2018,
+      Author = {Meseguer-Brocal, Gabriel and Cohen-Hadria, Alice and Gomez and Peeters Geoffroy},
+      Booktitle = {19th International Society for Music Information Retrieval Conference},
+      Editor = {ISMIR},
+      Month = {September},
+      Title = {DALI: a large Dataset of synchronized Audio, LyrIcs and notes, automatically created using teacher-student machine learning paradigm.},
+      Year = {2018}}
+
+
 Here's an example of the kind of information DALI contains:
 
 ![alt text][Example]
@@ -64,7 +75,8 @@ This file connects the unique DALI id with the artist_name-song_tile, the url to
 
 Each entry of the DALI dataset is an instance of the class DALI/Annotations.
 
-    entry = dali['a_dali_unique_id']
+    import copy
+    entry = copy.deepcopy(dali['a_dali_unique_id'])
     type(entry) -> DALI.Annotations.Annotations
 
 It has two main attributes: **info** and **annotations**.
@@ -114,6 +126,34 @@ Each level contains a list of annotation where each element has:
                      'time': [12.534, 12.659], # the begining and end of the  segment in seconds.
                      'freq': [466.1637615180899, 466.1637615180899], # The range of frequency the text information is covering. At the lowest level, syllables, it corresponds to the vocal note.
                      'index': 0} # link with the upper level. For example, index 0 at the 'words' level means that that particular word below to first line ([0]). The paragraphs level has no index key.
+
+This format is ment to be use when you want to work with each level indivually.
+
+Example 1: recovering the main vocal melody. Let's used the extra function DALI.Annotations.annot2vector() that transforms the annotations into a vector. There are two types of vector:
+
+- type='voice': each frame has a value 1 or 0 for voice or not voice.
+- type='notes': each frame has the freq value of the main vocal melody.
+
+      my_annot = entry.annotations['annot']['notes']
+      win_s = 0.046
+      hop_s = 0.014
+      sr_hz = 16000.
+      hop_bin = int(hop_s*sr_hz)
+      win_bin = int(win_s * sr_hz)
+      time_resolution = 1. / sr_hz
+      # the value dur is just an example you should use the end of your audio file
+      end_of_the_song =  entry.annotations['annot']['notes'][-1]['time'][1] + 10
+      melody = DALI.Annotations.annot2vector(my_annot, time_resolution, end_of_the_song, win_bin, hop_bin, type='notes')
+
+
+Example 2: find the audio frames that define each paragraph. Let's used the other extra function DALI.Annotations.annot2frames() that transforms time in seconds into time in frames.
+
+      my_annot = entry.annotations['annot']['paragraphs']
+      paragraphs = [i['time'] for i in annot2frames(my_annot, time_resolution)]
+      paragraphs --> [(49408, 94584), ..., (3080265, 3299694)]
+
+
+**NOTE**: DALI.Annotations.annot2frames() can also be used in the vertical format but not DALI.Annotations.annot2vector().
 
 #### Vertical.
 In this format the different levels of granularity are hierarchically connected:
@@ -176,6 +216,6 @@ Additionally, you can easily retrieve all its individual information with the fu
 
 If you have any question you can contact us at:
 
-> dali point dataset at gmail point com
+> dali dot dataset at gmail dot com
 
 ![alt text][DALI]
