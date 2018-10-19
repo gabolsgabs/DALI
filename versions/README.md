@@ -4,7 +4,7 @@
     <!--- For having the pass please send a mail to dali.dataset@gmail.com with the agree -->
 * The [definiton](https://github.com/gabolsgabs/DALI/blob/master/versions/v1.0.md)
 * Here's the [paper](http://ismir2018.ircam.fr/doc/pdfs/35_Paper.pdf)
-* and the citation [bibtex](https://github.com/gabolsgabs/DALI/blob/master/citations/v1.0.bib):
+* and the citation [bibtex](https://github.com/gabolsgabs/DALI/blob/master/citations/DALI_v1.0.bib):
 
       @inproceedings{Meseguer-Brocal_2018,
       	 Author = {Meseguer-Brocal, Gabriel and Cohen-Hadria, Alice and Gomez and Peeters Geoffroy},
