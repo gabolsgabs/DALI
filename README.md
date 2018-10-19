@@ -23,13 +23,20 @@ Here's an example of the kind of information DALI contains:
 
 ![alt text][Example]
 
- To work with DALI we provide a small python package than can be installed in your python or virtualenv.
 
-## Versions:
+DALI has two main elements:
 
-For the different versions go to [version](https://github.com/gabolsgabs/DALI/blob/master/versions/)
+#### 1- The dataset.
+
+You can find the different versions and the link for donwload them in [here](https://github.com/gabolsgabs/DALI/blob/master/versions/).
+
+#### 2- The code for working with DALI.
+This repository provides (DALI/code) a small python package for working with DALI.
+
 
 ## TUTORIAL:
+
+Once you have a DALI [version](https://github.com/gabolsgabs/DALI/blob/master/versions/)  here's a tutorial with the basic steps for working with this dataset.
 
 ### Installation.
 Clone this repository, go to folder DALI/code and run:
