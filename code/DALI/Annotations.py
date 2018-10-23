@@ -15,8 +15,8 @@ import DALI.utilities as ut
 
 
 def unroll(annot):
-    """ Unroll the hierarchical information (paragraphs[lines[words[notes]]])
-    into paragraphs, lines, words keeping the relations with the key 'index.'
+    """Unrolls the hierarchical information into paragraphs, lines, words
+    keeping the relations with the key 'index.'
     """
     tmp = copy.deepcopy(annot['hierarchical'])
     p, _ = ut.unroll(tmp, depth=0, output=[])
@@ -27,8 +27,9 @@ def unroll(annot):
 
 
 def roll(annot):
-    """ Roll the individual information into a hierarchical level
-    ([paragraph]['text'][line]['text'][word]['text'][notes]).'
+    """Rolls the individual info into a hierarchical level.
+
+    Output example: [paragraph]['text'][line]['text'][word]['text'][notes]'
     """
     tmp = copy.deepcopy(annot)
     output = ut.roll(tmp['notes'], tmp['words'])
@@ -38,16 +39,22 @@ def roll(annot):
 
 
 def annot2frames(annot, time_r, type='horizontal', depth=3):
-    """Transform the normal time of annotations into a discrete formar
-    with respect to a time_resolution:
-        - annot (list): annotations vector (annotations['annot'])
-            in any of the two formats.
-        - time_r (float): time resolution for discriticing the time.
-        - type (str): annotation format: horizontal or vertical.
-        - depth (int): depth of the horizontal level.
+    """Transforms annot time into a discrete formart wrt a time_resolution.
+
     This function can be use with the whole annotation or with a subset.
     For example, it can be called with a particular paragraph in the horizontal
     format [annot[paragraph_i]] or line [annot[paragraph_i]['text'][line_i]].
+
+    Parameters
+    ----------
+        annot : list
+            annotations vector (annotations['annot']) in any the formats.
+        time_r : float
+            time resolution for discriticing the time.
+        type : str
+            annotation format: horizontal or vertical.
+        depth : int
+            depth of the horizontal level.
     """
     output = []
     tmp = copy.deepcopy(annot)
@@ -67,29 +74,61 @@ def annot2frames(annot, time_r, type='horizontal', depth=3):
     return output
 
 
-def annot2vector(annot, time_r, dur, win_bin, hop_bin, type='voice'):
-    """Transform a normal annotations into frame vector:
-        - annot (list): annotations only horizontal level
+def annot2vector(annot, duration, time_r, t='voice'):
+    """Transforms the annotations into frame vector wrt a time resolution.
+
+    Parameters
+    ----------
+        annot : list
+            annotations only horizontal level
             (for example: annotations['annot']['lines'])
-        - time_r (float): time resolution for discriticing the time.
-        - dur (float): duration of the vector (for adding zeros).
-        - win_bin (int): window size in bins for sampling the vector.
-        - hop_bin (int): hope size in bins for sampling the vector.
-        - type (str):
+        time_r : float
+            time resolution for discriticing the time.
+        dur : float
+            duration of the vector (for adding zeros).
+        type : str
+            'voice': each frame has a value 1 or 0 for voice or not voice.
+            'notes': each frame has the freq value of the main vocal melody.
+    """
+    singal = np.zeros(int(duration / time_r))
+    for note in annot:
+        b, e = note['time']
+        b = np.round(b/time_r).astype(int)
+        e = np.round(e/time_r).astype(int)
+        if t == 'voice':
+            singal[b:e+1] = 1
+        if t == 'melody':
+            singal[b:e+1] = np.mean(note['freq'])
+    return singal
+
+
+def annot2vector_chopping(annot, dur, sr, win_bin, hop_bin, type='voice'):
+    """
+    Transforms the annotations into a frame vector by:
+
+        1 - creating a vector singal for a give sample rate
+        2 - chopping it using the given hop and wind size.
+
+    Parameters
+    ----------
+        annot : list
+            annotations only horizontal level
+            (for example: annotations['annot']['lines'])
+        dur : float
+            duration of the vector (for adding zeros).
+        sr : float
+            sample rate for discriticing annots.
+        win_bin : int
+            window size in bins for sampling the vector.
+        hop_bin: int
+            hope size in bins for sampling the vector.
+        type :str
             'voice': each frame has a value 1 or 0 for voice or not voice.
             'notes': each frame has the freq value of the main vocal melody.
     """
     output = []
     try:
-        singal = np.zeros(int(dur / time_r))
-        for note in annot:
-            b, e = note['time']
-            b = np.round(b/time_r).astype(int)
-            e = np.round(e/time_r).astype(int)
-            if type == 'voice':
-                singal[b:e+1] = 1
-            if type == 'notes':
-                singal[b:e+1] = np.mean(note['freq'])
+        singal = annot2vector(annot, dur, sr, type)
         win = np.hanning(win_bin)
         win_sum = np.sum(win)
         v = hop_bin*np.arange(int((len(singal)-win_bin)/hop_bin+1))
@@ -102,7 +141,9 @@ def annot2vector(annot, time_r, dur, win_bin, hop_bin, type='voice'):
 
 class Annotations(object):
     """Basic class that store annotations and its information.
-    It contains some method for transformin the annot representation."""
+
+    It contains some method for transformin the annot representation.
+    """
 
     def __init__(self, i):
         self.info = {'id': i, 'artist': 'None', 'title': 'None',
@@ -126,13 +167,13 @@ class Annotations(object):
         return
 
     def write_json(self, pth, name):
-        """Write the annots into a json file."""
+        """Writes the annots into a json file."""
         data = {'info': self.info, 'annotations': self.annotations}
         ut.write_in_json(pth, name, data)
         return
 
     def horizontal2vertical(self):
-        """Convert horizontal annotations (indivual levels) into a vertical
+        """Converts horizontal annotations (indivual levels) into a vertical
         representation (hierarchical)."""
         try:
             if self.annotations['type'] == 'horizontal':
@@ -145,7 +186,7 @@ class Annotations(object):
         return
 
     def vertical2horizontal(self):
-        """Convert vertical representation (hierarchical) into a  horizontal
+        """Converts vertical representation (hierarchical) into a  horizontal
         annotations (indivual levels)."""
         try:
             if self.annotations['type'] == 'vertical':

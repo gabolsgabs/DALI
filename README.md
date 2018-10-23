@@ -28,7 +28,7 @@ DALI has two main elements:
 
 #### 1- The dataset.
 
-You can find the different versions and the link for donwload them in [here](https://github.com/gabolsgabs/DALI/blob/master/versions/).
+You can find the different versions and the link for download them in [here](https://github.com/gabolsgabs/DALI/blob/master/versions/).
 
 #### 2- The code for working with DALI.
 This repository provides (DALI/code) a small python package for working with DALI.
@@ -60,7 +60,7 @@ Requirements: **numpy**
 DALI is presented as a set of **gz** files.
 Each one contains the annotations of a particular song.
 We use a unique id for each entry.
-Once a DALI version is donwloaded you can load it as follow:
+Once a DALI version is downloaded you can load it as follow:
 
     import DALI
     dali = DALI.main.get_the_DALI_dataset('path_to_dali', skip=[], keep=[])
@@ -142,16 +142,12 @@ This format is ment to be use when you want to work with each level indivually.
 - type='notes': each frame has the freq value of the main vocal melody.
 
       my_annot = entry.annotations['annot']['notes']
-      win_s = 0.046
-      hop_s = 0.014
-      sr_hz = 16000.
-      hop_bin = int(hop_s*sr_hz)
-      win_bin = int(win_s * sr_hz)
-      time_resolution = 1. / sr_hz
+      time_resolution = 0.014
       # the value dur is just an example you should use the end of your audio file
       end_of_the_song =  entry.annotations['annot']['notes'][-1]['time'][1] + 10
-      melody = DALI.Annotations.annot2vector(my_annot, time_resolution, end_of_the_song, win_bin, hop_bin, type='notes')
+      melody = DALI.Annotations.annot2vector(my_annot, time_resolution, type='notes')
 
+**NOTE: have a look to annot2vector_chopping() for computing a vector chopped with respect to a given window and hop size.**
 
 > Example 2: find the audio frames that define each paragraph. Let's used the other extra function DALI.Annotations.annot2frames() that transforms time in seconds into time in frames.
 
