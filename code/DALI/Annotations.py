@@ -74,7 +74,7 @@ def annot2frames(annot, time_r, type='horizontal', depth=3):
     return output
 
 
-def annot2vector(annot, duration, time_r, t='voice'):
+def annot2vector(annot, duration, time_r, type='voice'):
     """Transforms the annotations into frame vector wrt a time resolution.
 
     Parameters

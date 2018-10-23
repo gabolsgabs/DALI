@@ -33,6 +33,9 @@ You can find the different versions and the link for download them in [here](htt
 #### 2- The code for working with DALI.
 This repository provides (DALI/code) a small python package for working with DALI.
 
+## NEWS:
+
+<!--- POSSIBLE ERRORS IN THE F0 of the singing voice-->
 
 ## TUTORIAL:
 
