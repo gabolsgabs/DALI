@@ -95,9 +95,9 @@ def annot2vector(annot, duration, time_r, type='voice'):
         b, e = note['time']
         b = np.round(b/time_r).astype(int)
         e = np.round(e/time_r).astype(int)
-        if t == 'voice':
+        if type == 'voice':
             singal[b:e+1] = 1
-        if t == 'melody':
+        if type == 'melody':
             singal[b:e+1] = np.mean(note['freq'])
     return singal
 
