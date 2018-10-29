@@ -2,4 +2,5 @@
 *.pyc
 /code/DALI/cross-correlation.py
 /code/DALI/my_helper.py
+/code/DALI/ground_truth.py
 Icon?

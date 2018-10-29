@@ -1,7 +1,19 @@
+Here you can find the different dali_data versions.
+Dali_data has its own version control.
+There are always two numbers: version a.b.
+
+* Ther first number (**a**) refers to the singing voice detection system generation  used for retrieving the audio and finding the gobal alignmnet.
+
+* The second number (**b**) refers to improvements for solving local alignment or notes problems.
+
+The definition of each version follows the standard presented at:
+[Geoffroy Peeters, Karën Fort. Towards a (better) Definition of Annotated MIR Corpora. International Society for Music Information Retrieval Conference (ISMIR), Oct 2012, Porto, Portugal. 2012.](https://hal.archives-ouvertes.fr/hal-00713074)
+
+For the **password**, please fill out the form: https://goo.gl/forms/rGgI6RQdyYXMdMaq1
+
 ##Version 1.0.
 
 * **Donwload** it in [here](https://mega.nz/#!7u5B0aST)
-    <!--- For having the pass please send a mail to dali.dataset@gmail.com with the agree -->
 * The [definiton](https://github.com/gabolsgabs/DALI/blob/master/versions/v1.0.md)
 * Here's the [paper](http://ismir2018.ircam.fr/doc/pdfs/35_Paper.pdf)
 * and the citation [bibtex](https://github.com/gabolsgabs/DALI/blob/master/citations/DALI_v1.0.bib):
@@ -15,5 +27,6 @@
       	 Year = {2018}}
 
 
-The definition of the different versions follows the standard presented at:
-[Geoffroy Peeters, Karën Fort. Towards a (better) Definition of Annotated MIR Corpora. International Society for Music Information Retrieval Conference (ISMIR), Oct 2012, Porto, Portugal. 2012.](https://hal.archives-ouvertes.fr/hal-00713074)
+##Version 2.0.
+
+#### Soon

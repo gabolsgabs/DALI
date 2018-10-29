@@ -4,8 +4,8 @@ Functions for loading the Dali dataset.
 
 GABRIEL MESEGUER-BROCAL 2018
 """
-import DALI.utilities as ut
-from DALI.Annotations import Annotations
+from . import utilities as ut
+# from .Annotations import Annotations
 
 # ------------------------ READING INFO ------------------------
 
