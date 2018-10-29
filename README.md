@@ -166,7 +166,7 @@ It is the default format.
 
 ![alt text][horizontal]
 
-    entry.vertical2horizontal()
+    entry.vertical2horizontal() --> 'Annot are already in a vertical format'
     entry.annotations['type'] --> 'horizontal'
     entry.annotations['annot'].keys() --> ['notes', 'lines', 'words', 'paragraphs']
 
@@ -178,7 +178,7 @@ Each level contains a list of annotation where each element has:
                      'freq': [466.1637615180899, 466.1637615180899], # The range of frequency the text information is covering. At the lowest level, syllables, it corresponds to the vocal note.
                      'index': 0} # link with the upper level. For example, index 0 at the 'words' level means that that particular word below to first line ([0]). The paragraphs level has no index key.
 
-This format is ment to be use when you want to work with each level indivually.
+This format is ment to be use for working with each level indivually.
 
 > Example 1: recovering the main vocal melody.
 
