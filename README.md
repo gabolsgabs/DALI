@@ -30,12 +30,12 @@ Here's an example of the kind of information DALI contains:
 
 DALI has two main elements:
 
-#### 1- The dataset.
+## 1- The dataset.
 
 The dataset itself. It is denoted as **dali_data** and it is presented as a collection of **gz** files.
 You can find the different DALI_data versions in [here](https://github.com/gabolsgabs/DALI/blob/master/versions/).
 
-#### 2- The code for working with DALI.
+## 2- The code for working with DALI.
 The code, denoted as **dali_code**, for reading and working with dali_data.
 It is stored in this repository and presented as a python package.
 Dali_code has its own versions controlled by this github.
@@ -52,19 +52,19 @@ repository<br>
 │   └── setup.py<br>
 
 
-## NEWS:
+# NEWS:
 
 We are working in:
 * the second generation for the Singing voice detection system.
 * errors in the F0.
 * errors in local alignment.
 
-## TUTORIAL:
+# TUTORIAL:
 
 First of all, [download](https://github.com/gabolsgabs/DALI/blob/master/versions/) your Dali_data version and clone this repository.
 
 
-### Installation Dali_code.
+## 0- Installing Dali_code.
 Go to folder DALI/code and run:
 
   >  pip install .
@@ -82,7 +82,7 @@ Requirements: **numpy**
 **NOTE**: the version of the code in pip only refers to the code itself. The different versions of the Dali_data can be found above.
 
 
-### Loading DALI_data.
+## 1- Loading DALI_data.
 
 DALI is presented as a set of **gz** files.
 Each gz contains the annotations of a particular song.
@@ -95,12 +95,25 @@ You can download your dali_data version as follow:
 
 This function can also be used to load a subset of the DALI dataset by providing the ids of the entries you either want to **skip** or to **keep**.
 
-_dali_data_ is a dictionary where each key is the unique id and the value a is an instance of the class DALI/Annotations namely **an annotation file**.
+**NOTE**: Loading DALI might take some minutes depending on your computer and python version.
+
+Additionally, each DALI version contains a DALI_DATA_INFO.gz:
+
+    dali_info = dali_code.get_info(dali_data_path + 'info/DALI_DATA_INFO.gz')
+    print(dali_info[0]) -> array(['DALI_ID', 'NAME', 'YOUTUBE', 'WORKING'])
+
+This file matches the unique DALI id with the artist_name-song_tile, the url to youtube and a bool that says if the youtube link is working or not.  
+
+<!--- This file is updated with -->
+
+### An annotation instance.
+
+_dali_data_ is a dictionary where each key is a unique id and the value is an instance of the class DALI/Annotations namely **an annotation instance** of the class Annotations.
 
     entry = dali_data['a_dali_unique_id']
     type(entry) -> DALI.Annotations.Annotations
 
-It has two main attributes: **info** and **annotations**.
+Each annotation instance has two attributes: **info** and **annotations**.
 
     entry.info --> {'id': 'ffa06527f9e84472ba44901045753b4a',
                     'artist': 'An Artist',
@@ -120,24 +133,23 @@ It has two main attributes: **info** and **annotations**.
                                  # The n of genre depends on the song
                                  'language': 'a language'}}
 
-    entry.annotations --> {'annot': {'the annotations'},
+    entry.annotations --> {'annot': {'the annotations themselves'},
                            'type': 'horizontal' or 'vertical',
                            'annot_param': {'fr': float(frame rate used in the annotation process),
                                           'offset': float(offset value)}}
 
 
-**NOTE**: Loading DALI might take some minutes depending on your computer and python version.
+# 2- Getting the audio.
 
-Additionally, each DALI version contains a DALI_DATA_INFO.gz:
+You can retrieve the audio for each annotation (if avilable) using the function dali_code.get_audio():
 
-    dali_info = dali_code.get_info(dali_data_path + 'info/DALI_DATA_INFO.gz')
-    print(dali_info[0]) -> array(['DALI_ID', 'NAME', 'YOUTUBE', 'WORKING'])
+    errors = dali_code.get_audio(dali_info, 'full_path_to_store_the_audio', skip=[], keep=[])
+    errors -> ['dali_id', 'youtube_url', 'error']
 
-This file matches the unique DALI id with the artist_name-song_tile, the url to youtube and a bool that says if the youtube link is working or not.  
+This function can also be used to download a subset of the DALI dataset by providing the ids of the entries you either want to **skip** or to **keep**.
 
-<!--- This file is updated with -->
 
-### Working with DALI.
+# 3- Working with DALI.
 
 Annotations are in:
 > entry.annotations['annot']
@@ -148,8 +160,9 @@ You can easily change the format using the functions:
       entry.horizontal2vertical()
       entry.vertical2horizontal()
 
-#### Horizontal.
+## Horizontal.
 In this format each level of granularity is stored indivually.
+It is the default format.
 
 ![alt text][horizontal]
 
@@ -193,7 +206,7 @@ Let's used the other extra function dali_code.annot2frames() that transforms tim
 
 **NOTE**: dali_code.annot2frames() can also be used in the vertical format but not dali_code.annot2vector().
 
-#### Vertical.
+## Vertical.
 In this format the different levels of granularity are hierarchically connected:
 
 ![alt text][vertical]
@@ -261,13 +274,6 @@ Additionally, you can easily retrieve all its individual information with the fu
       words_in_line, _ = dali_code.unroll(my_line, depth=0, output=[])
       notes_in_line, _ = dali_code.unroll(my_line, depth=1, output=[])
 
-### Getting the audio.
-
-You can retrieve the audio using the function dali_code.get_audio():
-
-    dali_code.get_audio(dali_info, 'full_path_to_store_the_audio', skip=[], keep=[])
-
-This function can also be used to download a subset of the DALI dataset by providing the ids of the entries you either want to **skip** or to **keep**.
 _____
 If you have any question you can contact us at:
 

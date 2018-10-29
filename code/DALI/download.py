@@ -48,7 +48,7 @@ def get_my_ydl(directory=os.path.dirname(os.path.abspath(__file__))):
     return ydl
 
 
-def audio_from_url(url, name, ydl=None,
+def audio_from_url(url, name, ydl=None, errors=[],
                    directory=os.path.dirname(os.path.abspath(__file__))):
     """
     Download audio from a url.
@@ -59,6 +59,7 @@ def audio_from_url(url, name, ydl=None,
         directory : str
             path for storing the data
     """
+    error = None
     if not ydl:
         # ydl(youtube_dl.YoutubeDL): extractor
         ydl = get_my_ydl(name, directory)
@@ -66,10 +67,12 @@ def audio_from_url(url, name, ydl=None,
         'ext': ydl.params['postprocessors'][0]['preferredcodec'],
         'title': name}
     if ydl:
-        url = base_url + url
         print ("Downloading " + url)
         try:
-            ydl.download([url])
+            ydl.download([base_url + url])
         except Exception as e:
             print(e)
+            error = e
+    if error:
+        errors.append([name, url, error])
     return
