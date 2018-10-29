@@ -30,12 +30,12 @@ Here's an example of the kind of information DALI contains:
 
 DALI has two main elements:
 
-## 1- The dataset.
+## 1- The dataset - dali_data
 
 The dataset itself. It is denoted as **dali_data** and it is presented as a collection of **gz** files.
 You can find the different DALI_data versions in [here](https://github.com/gabolsgabs/DALI/blob/master/versions/).
 
-## 2- The code for working with DALI.
+## 2- The code for working with DALI - dali_code
 The code, denoted as **dali_code**, for reading and working with dali_data.
 It is stored in this repository and presented as a python package.
 Dali_code has its own versions controlled by this github.
