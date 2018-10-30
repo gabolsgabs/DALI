@@ -1,0 +1,10 @@
+<musicdescription xmlns="http://www.ircam.fr/musicdescription/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" date="2017-01-28" format="20140305A" xsi:schemaLocation="http://www.ircam.fr/musicdescription/1.1 http://recherche.ircam.fr/anasyn/xsd/musicdescription_1.1.xsd">
+<media>Audio_path</media>
+<descriptiondefinition id="1">
+	<type>freetype</type>
+	<generator date="" name="AudioSculpt" version="3.4.5" />
+</descriptiondefinition>
+<segment endFreq="" length="" sourcetrack="" startFreq="" time="">
+	<freetype id="1" value="" />
+</segment>
+</musicdescription>

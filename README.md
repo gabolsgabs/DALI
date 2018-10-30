@@ -77,7 +77,7 @@ DALI can be uninstalled with:
 
   >  pip uninstall DALI-dataset
 
-Requirements: **numpy**
+Requirements: **numpy** and **youtube_dl**
 
 **NOTE**: the version of the code in pip only refers to the code itself. The different versions of the Dali_data can be found above.
 
@@ -160,8 +160,8 @@ You can easily change the format using the functions:
       entry.horizontal2vertical()
       entry.vertical2horizontal()
 
-## Horizontal.
-In this format each level of granularity is stored indivually.
+## 3.1- Horizontal.
+In this format each level of granularity is stored individually.
 It is the default format.
 
 ![alt text][horizontal]
@@ -178,8 +178,20 @@ Each level contains a list of annotation where each element has:
                      'freq': [466.1637615180899, 466.1637615180899], # The range of frequency the text information is covering. At the lowest level, syllables, it corresponds to the vocal note.
                      'index': 0} # link with the upper level. For example, index 0 at the 'words' level means that that particular word below to first line ([0]). The paragraphs level has no index key.
 
-This format is ment to be use for working with each level indivually.
+### 3.1.1- Vizualizing the annotations.
 
+You can export the annotations of each individual level to a xml or text file to vizualize them with Audacity or AudioSculpt. The pitch information is only presented in the xml files for AudioSculpt.
+
+        my_annot = entry.annotations['annot']['notes']
+        path_save = 'my_save_path'
+        dali_code.write_annot_txt(my_annot, 'my_annot', path_save)
+        # import the txt file in your Audacity
+        dali_code.write_annot_xml(my_annot, 'my_annot', path_save)
+        # import Rythm XML file in AudioSculpt
+
+
+### 3.1.2- Examples.
+This format is ment to be use for working with each level individually.
 > Example 1: recovering the main vocal melody.
 
 Let's used the extra function dali_code.annot2vector() that transforms the annotations into a vector. There are two types of vector:
@@ -206,7 +218,7 @@ Let's used the other extra function dali_code.annot2frames() that transforms tim
 
 **NOTE**: dali_code.annot2frames() can also be used in the vertical format but not dali_code.annot2vector().
 
-## Vertical.
+## 3.2- Vertical.
 In this format the different levels of granularity are hierarchically connected:
 
 ![alt text][vertical]
@@ -242,7 +254,7 @@ again, each word contains all the notes for that word to be sung:
 
 Only the deepest level directly has the text information.
 
-      notes_1word_1line_1paragraph = words_1line_1paragraph[0]['text']
+      notes_1word_1line_1paragraph = words_1line_1paragraph[1]['text']
       notes_1word_1line_1paragraph[0] --> {'freq': [...], 'time': [...],
                                            'text': 'note text'}
 
@@ -254,6 +266,7 @@ You can always get the text at specific point with dali_code.get_text(), i.e:
       dali_code.get_text(my_annot[0]['text']) --> ['text word_0', 'text word_1', ..., text_word_n]
       # words in the first paragraph
 
+### 3.2.2- Examples.
 This organization is meant to be used for working with specific hierarchical blocks.
 
 > Example 1: working only with the third paragraph.

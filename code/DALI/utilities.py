@@ -53,6 +53,15 @@ def check_file(fl, print_error=True):
     return output
 
 
+def create_directory(directory, print_error=False):
+    """Create a folder."""
+    if not check_directory(directory, print_error) and \
+       check_absolute_path(directory):
+        os.makedirs(directory)
+        print("Creating a folder at " + directory)
+    return directory
+
+
 def list_files_from_folder(directory, extension, print_error=True):
     """Return all the files with a specific extension for a given folder."""
     files = []
