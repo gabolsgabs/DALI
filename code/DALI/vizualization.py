@@ -1,6 +1,6 @@
 from DALI.Annotations import Annotations
 import os
-import utilities as ut
+from . import utilities as ut
 import xml.etree.ElementTree as ET
 
 

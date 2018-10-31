@@ -36,11 +36,46 @@ def generator_folder(folder_pth, skip=[], keep=[]):
                                                       print_error=True), skip)
 
 
-def get_the_DALI_dataset(pth, skip=[], keep=[]):
+def change_time(entry, new_offset=None, new_fr=None):
+    type = 'horizontal'
+    fr = entry.annotations['annot_param']['fr']
+    offset = entry.annotations['annot_param']['offset']
+    if new_fr is None:
+        new_fr = fr
+    if new_offset is None:
+        new_offset = offset
+    args = (fr, offset, new_fr, new_offset)
+    entry.annotations['annot_param']['fr'] = new_fr
+    entry.annotations['annot_param']['offset'] = new_offset
+    if entry.annotations['type'] == 'vertical':
+        type = 'vertical'
+        entry.vertical2horizontal()
+    for key, value in entry.annotations['annot'].items():
+        value = ut.compute_new_time(value, *args)
+    if type == 'vertical':
+        entry.horizontal2vertical()
+    return
+
+
+def update_with_ground_truth(dali, gt_file):
+    gt = []
+    if ut.check_file(gt_file, print_error=False):
+        gt = load_ground_truth(gt_file)
+    if len(gt) > 0:
+        for i in gt:
+            entry = dali[i['id']]
+            change_time(entry, i['offset'], i['fr'])
+            entry.info['ground-truth'] = True
+    return dali
+
+
+def get_the_DALI_dataset(pth, gt_file='', skip=[], keep=[]):
     """Load the whole DALI dataset. It can load only a subset of the dataset
     by providing either the ids to skip or the ids that to load."""
     args = (pth, skip, keep)
-    return {song.info['id']: song for song in generator_folder(*args)}
+    dali = {song.info['id']: song for song in generator_folder(*args)}
+    dali = update_with_ground_truth(dali, gt_file)
+    return dali
 
 
 def get_an_entry(fl_pth):
@@ -51,12 +86,13 @@ def get_an_entry(fl_pth):
 def get_info(dali_info_file):
     """Read the DALI INFO file with ['DALI_ID', 'YOUTUBE_ID', 'WORKING']
     """
-    info = None
-    try:
-        info = ut.read_gzip(dali_info_file, print_error=True)
-    except Exception as e:
-        print('ERROR: not DALI_INFO in your folder')
-    return info
+    return ut.read_gzip(dali_info_file, print_error=True)
+
+
+def load_ground_truth(dali_gt_file):
+    """Read the ground_truth file
+    """
+    return ut.read_gzip(dali_gt_file, print_error=True)
 
 # ------------------------ BASIC OPERATIONS ------------------------
 

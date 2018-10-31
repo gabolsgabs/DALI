@@ -96,6 +96,25 @@ You can download your dali_data version as follow:
 
 This function can also be used to load a subset of the DALI dataset by providing the ids of the entries you either want to **skip** or to **keep**.
 
+You can also update your dali_data for a particular [ground-truth file](link_gt):
+
+    gt_file = 'full_path_to_my_ground_truth_file'
+    # once you have your dali_data
+    dali_data = dali_code.update_with_ground_truth(dali_data, gt_file)
+    # while reading the dataset
+    dali_data = dali_code.get_the_DALI_dataset(dali_data_path, gt_file=gt_file)
+    # you can also load the ground-truth
+    gt = dali_code.utilities.read_gzip(gt_file)
+    type(gt) --> list
+    gt[0] --> {'id': 'a_dali_unique_id',
+               'offset': float(a_number),
+               'fr': float(a_number),
+               'info': {'title': 'A song title',
+                        'artist': 'An Artist',
+               'language': 'english'}}
+
+
+
 **NOTE**: Loading DALI might take some minutes depending on your computer and python version.
 
 Additionally, each DALI version contains a DALI_DATA_INFO.gz:
@@ -107,7 +126,7 @@ This file matches the unique DALI id with the artist_name-song_tile, the url to 
 
 <!--- This file is updated with -->
 
-### An annotation instance.
+### 1.1- An annotation instance.
 
 _dali_data_ is a dictionary where each key is a unique id and the value is an instance of the class DALI/Annotations namely **an annotation instance** of the class Annotations.
 
@@ -116,16 +135,16 @@ _dali_data_ is a dictionary where each key is a unique id and the value is an in
 
 Each annotation instance has two attributes: **info** and **annotations**.
 
-    entry.info --> {'id': 'ffa06527f9e84472ba44901045753b4a',
+    entry.info --> {'id': 'a_dali_unique_id',
                     'artist': 'An Artist',
                     'title': 'A song title',
                     'dataset_version': 1.0,     **# dali_data version**
-                    'ground-truth': 'None',     **# Not ready yet**
+                    'ground-truth': False,     
                     'scores': {'NCC': 0.8098520072498807,
                                'manual': 0.0},  **# Not ready yet**
                     'audio': {'url': 'a youtube url',
                               'path': 'None',   
-                              **# To be modified to point to your local audio file**
+                              **# To you to modify it to point to your local audio file**
                               'working': True},
                     'metadata': {'album': 'An album title',
                                  'release_date': 'A year',
@@ -139,6 +158,18 @@ Each annotation instance has two attributes: **info** and **annotations**.
                            'annot_param': {'fr': float(frame rate used in the annotation process),
                                           'offset': float(offset value)}}
 
+
+#### 1.2- Saving as json.
+
+You can export and import annotations a json file.
+
+        path_save = 'my_save_path'
+        name = 'my_annot_name'
+        # export
+        entry.write_json(path_save, name)
+        # import
+        my_json_entry = dali_code.Annotations()
+        my_json_entry.read_json(os.path.join(path_save, name+'.json'))
 
 # 2- Getting the audio.
 
@@ -179,15 +210,16 @@ Each level contains a list of annotation where each element has:
                      'freq': [466.1637615180899, 466.1637615180899], # The range of frequency the text information is covering. At the lowest level, syllables, it corresponds to the vocal note.
                      'index': 0} # link with the upper level. For example, index 0 at the 'words' level means that that particular word below to first line ([0]). The paragraphs level has no index key.
 
-### 3.1.1- Vizualizing the annotations.
+### 3.1.1- Vizualizing an annotation file.
 
 You can export the annotations of each individual level to a xml or text file to vizualize them with Audacity or AudioSculpt. The pitch information is only presented in the xml files for AudioSculpt.
 
         my_annot = entry.annotations['annot']['notes']
         path_save = 'my_save_path'
-        dali_code.write_annot_txt(my_annot, 'my_annot', path_save)
+        name = 'my_annot_name'
+        dali_code.write_annot_txt(my_annot, name, path_save)
         # import the txt file in your Audacity
-        dali_code.write_annot_xml(my_annot, 'my_annot', path_save)
+        dali_code.write_annot_xml(my_annot, name, path_save)
         # import Rythm XML file in AudioSculpt
 
 
@@ -288,7 +320,21 @@ Additionally, you can easily retrieve all its individual information with the fu
       words_in_line, _ = dali_code.unroll(my_line, depth=0, output=[])
       notes_in_line, _ = dali_code.unroll(my_line, depth=1, output=[])
 
+# 4- Correcting Annotations.
+
+Up to now, we are facing only global alignment problems. You can change this alignment by modifying the offset and frame rate parameters. The original ones are stored at:
+
+      print(entry.annotations['annot_param'])
+      {'offset': float(a_number), 'fr': float(a_number)}
+
+If you find a better parameters set you can modified the annotations using the function dali_code.change_time():
+
+      dali_code.change_time(entry, new_offset, new_fr)
+      # The default new_offset and new_fr are entry.annotations['annot_param']
+
+We encourage you to send us your parameters in order to improve DALI.
+
 _____
-If you have any question you can contact us at:
+You can contact us at:
 
 > dali dot dataset at gmail dot com

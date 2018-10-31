@@ -138,6 +138,51 @@ def check_structure(ref, struct):
         output = isinstance(struct, type(ref))
     return output
 
+# -------------- CHANING ANNOTATIONS --------------
+
+
+def beat2time(beat, **args):
+    bps = None
+    offset = 0
+    beat = float(beat)
+    if 'bps' in args:
+        bps = float(args['bps'])
+    if 'fr' in args:
+        bps = float(args['fr']) / 60.
+    if 'offset' in args:
+        offset = args['offset']
+    return beat/bps + offset
+
+
+def time2beat(time, **args):
+    bps = None
+    offset = 0
+    if 'bps' in args:
+        bps = float(args['bps'])
+    if 'fr' in args:
+        bps = float(args['fr']) / 60.
+    if 'offset' in args:
+        offset = args['offset']
+    return np.round((time - offset)*bps).astype(int)
+
+
+def change_time(time, old_param, new_param):
+    beat = time2beat(time, offset=old_param['offset'], fr=old_param['fr'])
+    new_time = beat2time(beat, offset=new_param['offset'], fr=new_param['fr'])
+    return new_time
+
+
+def change_time_tuple(time, old_param, new_param):
+    return tuple(change_time(t, old_param, new_param) for t in time)
+
+
+def compute_new_time(lst, old_fr, old_offset, new_fr, new_offset):
+    old_param = {'fr': old_fr, 'offset': old_offset}
+    new_param = {'fr': new_fr, 'offset': new_offset}
+    for e in lst:
+        e['time'] = change_time_tuple(e['time'], old_param, new_param)
+    return lst
+
 # -------------- TRANSFORMING THE INFO IN THE ANNOTATIONS --------------
 
 

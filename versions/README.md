@@ -11,9 +11,10 @@ The definition of each version follows the standard presented at:
 
 For the **password**, please fill out the form: https://goo.gl/forms/rGgI6RQdyYXMdMaq1
 
-##Version 1.0.
+### Version 1.0.
 
-* **Donwload** it in [here](https://mega.nz/#!7u5B0aST)
+* **Donwload** it in [here](https://mega.nz/#!bzQUnCyK)
+* The ground-truth in
 * The [definiton](https://github.com/gabolsgabs/DALI/blob/master/versions/v1.0.md)
 * Here's the [paper](http://ismir2018.ircam.fr/doc/pdfs/35_Paper.pdf)
 * and the citation [bibtex](https://github.com/gabolsgabs/DALI/blob/master/citations/DALI_v1.0.bib):
@@ -27,6 +28,6 @@ For the **password**, please fill out the form: https://goo.gl/forms/rGgI6RQdyYX
       	 Year = {2018}}
 
 
-##Version 2.0.
+### Version 2.0.
 
-#### Soon
+##### Soon
