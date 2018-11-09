@@ -1,10 +1,10 @@
 
-[horizontal]: ./images/horizontal.png
-[vertical]: ./images/vertical.png
-[p1]: ./images/p1.png
-[l1]: ./images/l1.png
-[w1]: ./images/w1.png
-[Example]: ./images/Example.png
+[horizontal]: ./docs/images/horizontal.png
+[vertical]: ./docs/images/vertical.png
+[p1]: ./docs/images/p1.png
+[l1]: ./docs/images/l1.png
+[w1]: ./docs/images/w1.png
+[Example]: ./docs/images/Example.png
 
 
 # WELCOME TO THE DALI DATASET: a large **D**ataset of synchronised **A**udio, **L**yr**I**cs and vocal notes.
@@ -55,6 +55,8 @@ repository<br>
 
 # NEWS:
 
+Ground-Truth for version 1.0 updated with 105 songs.
+
 We are working in:
 * the second generation for the Singing voice detection system.
 * errors in the F0.
@@ -96,24 +98,6 @@ You can download your dali_data version as follow:
 
 This function can also be used to load a subset of the DALI dataset by providing the ids of the entries you either want to **skip** or to **keep**.
 
-You can also update your dali_data for a particular [ground-truth file](link_gt):
-
-    gt_file = 'full_path_to_my_ground_truth_file'
-    # once you have your dali_data
-    dali_data = dali_code.update_with_ground_truth(dali_data, gt_file)
-    # while reading the dataset
-    dali_data = dali_code.get_the_DALI_dataset(dali_data_path, gt_file=gt_file)
-    # you can also load the ground-truth
-    gt = dali_code.utilities.read_gzip(gt_file)
-    type(gt) --> list
-    gt[0] --> {'id': 'a_dali_unique_id',
-               'offset': float(a_number),
-               'fr': float(a_number),
-               'info': {'title': 'A song title',
-                        'artist': 'An Artist',
-               'language': 'english'}}
-
-
 
 **NOTE**: Loading DALI might take some minutes depending on your computer and python version.
 
@@ -126,7 +110,7 @@ This file matches the unique DALI id with the artist_name-song_tile, the url to 
 
 <!--- This file is updated with -->
 
-### 1.1- An annotation instance.
+## 1.1- An annotation instance.
 
 _dali_data_ is a dictionary where each key is a unique id and the value is an instance of the class DALI/Annotations namely **an annotation instance** of the class Annotations.
 
@@ -159,7 +143,7 @@ Each annotation instance has two attributes: **info** and **annotations**.
                                           'offset': float(offset value)}}
 
 
-#### 1.2- Saving as json.
+## 1.2- Saving as json.
 
 You can export and import annotations a json file.
 
@@ -170,6 +154,47 @@ You can export and import annotations a json file.
         # import
         my_json_entry = dali_code.Annotations()
         my_json_entry.read_json(os.path.join(path_save, name+'.json'))
+
+
+## 1.3- Ground-truth.
+
+Each dali_data has its own ground-truth [ground-truth file](https://github.com/gabolsgabs/DALI/blob/master/docs/ground_truth/).
+The annotations that are part of the ground-truth are entries of the dali_data with the offset and fr parameters manually annotated.
+
+You can easily load a ground-truth file:
+
+    # you can load the ground-truth
+    gt = dali_code.utilities.read_gzip(gt_file)
+    type(gt) --> list
+    gt[0] --> {'id': 'a_dali_unique_id',
+               'offset': float(a_number),
+               'fr': float(a_number),
+               'info': {'title': 'A song title',
+                        'artist': 'An Artist',
+               'language': 'english'}}
+
+You can also load a **dali_gt** with all the entries of the dali_data that are part of the ground-truth with their annotations updated to the offset and fr parameters manually annotated:
+
+    # dali_gt only with ground_truth songs
+    gt_file = 'full_path_to_my_ground_truth_file'
+    gt = dali_code.utilities.read_gzip(gt_file)
+    dali_gt = dali_code.get_the_DALI_dataset(dali_data_path, gt_file, keep=gt.keys())
+    type(gt) --> dict
+    gt['a_dali_unique_id'] --> {'offset': float(a_number),
+                                'fr': float(a_number)}
+
+
+You can also load the whole dali_data and update the songs that are part of the ground truth with the offset and fr parameters manually verified.
+
+    # Two options:
+    # 1- once you have your dali_data
+    dali_data = dali_code.update_with_ground_truth(dali_data, gt_file)
+
+    # 2- while reading the dataset
+    dali_data = dali_code.get_the_DALI_dataset(dali_data_path, gt_file=gt_file)
+
+
+NOTE 1: Please be sure you have the last [ground truth version](https://github.com/gabolsgabs/DALI/blob/master/versions/).
 
 # 2- Getting the audio.
 

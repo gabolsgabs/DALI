@@ -102,7 +102,7 @@ def annot2vector(annot, duration, time_r, type='voice'):
     return singal
 
 
-def annot2vector_chopping(annot, dur, sr, win_bin, hop_bin, type='voice'):
+def annot2vector_chopping(annot, dur, time_r, win_bin, hop_bin, type='voice'):
     """
     Transforms the annotations into a frame vector by:
 
@@ -116,7 +116,7 @@ def annot2vector_chopping(annot, dur, sr, win_bin, hop_bin, type='voice'):
             (for example: annotations['annot']['lines'])
         dur : float
             duration of the vector (for adding zeros).
-        sr : float
+        time_r : float
             sample rate for discriticing annots.
         win_bin : int
             window size in bins for sampling the vector.
@@ -128,7 +128,7 @@ def annot2vector_chopping(annot, dur, sr, win_bin, hop_bin, type='voice'):
     """
     output = []
     try:
-        singal = annot2vector(annot, dur, sr, type)
+        singal = annot2vector(annot, dur, time_r, type)
         win = np.hanning(win_bin)
         win_sum = np.sum(win)
         v = hop_bin*np.arange(int((len(singal)-win_bin)/hop_bin+1))
