@@ -12,12 +12,13 @@ class Annotations(object):
     It contains some method for transformin the annot representation.
     """
 
-    def __init__(self, i='None'):
-        self.info = {'id': i, 'artist': 'None', 'title': 'None',
-                     'audio': {'url': 'None', 'working': False, 'path': 'None'},
+    def __init__(self, i=u'None'):
+        self.info = {'id': i, 'artist': u'None', 'title': u'None',
+                     'audio': {'url': u'None', 'working': False,
+                               'path': u'None'},
                      'metadata': {}, 'scores': {'NCC': 0.0, 'manual': 0.0},
                      'dataset_version': 0.0, 'ground-truth': False}
-        self.annotations = {'type': 'None', 'annot': {},
+        self.annotations = {'type': u'None', 'annot': {},
                             'annot_param': {'fr': 0.0, 'offset': 0.0}}
         self.errors = None
         return

@@ -99,7 +99,7 @@ You can download your dali_data version as follow:
 This function can also be used to load a subset of the DALI dataset by providing the ids of the entries you either want to **skip** or to **keep**.
 
 
-**NOTE**: Loading DALI might take some minutes depending on your computer and python version.
+**NOTE**: Loading DALI might take some minutes depending on your computer and python version. Python3 is faster than python2.
 
 Additionally, each DALI version contains a DALI_DATA_INFO.gz:
 
@@ -147,7 +147,7 @@ Each annotation instance has two attributes: **info** and **annotations**.
 
 You can export and import annotations a json file.
 
-        path_save = 'my_save_path'
+        path_save = 'my_full_save_path'
         name = 'my_annot_name'
         # export
         entry.write_json(path_save, name)
@@ -163,25 +163,19 @@ The annotations that are part of the ground-truth are entries of the dali_data w
 
 You can easily load a ground-truth file:
 
+    gt_file = 'full_path_to_my_ground_truth_file'
     # you can load the ground-truth
     gt = dali_code.utilities.read_gzip(gt_file)
-    type(gt) --> list
-    gt[0] --> {'id': 'a_dali_unique_id',
-               'offset': float(a_number),
-               'fr': float(a_number),
-               'info': {'title': 'A song title',
-                        'artist': 'An Artist',
-               'language': 'english'}}
+    type(gt) --> dict
+    gt['a_dali_unique_id'] --> {'offset': float(a_number),
+                                'fr': float(a_number)}
 
 You can also load a **dali_gt** with all the entries of the dali_data that are part of the ground-truth with their annotations updated to the offset and fr parameters manually annotated:
 
     # dali_gt only with ground_truth songs
-    gt_file = 'full_path_to_my_ground_truth_file'
     gt = dali_code.utilities.read_gzip(gt_file)
     dali_gt = dali_code.get_the_DALI_dataset(dali_data_path, gt_file, keep=gt.keys())
-    type(gt) --> dict
-    gt['a_dali_unique_id'] --> {'offset': float(a_number),
-                                'fr': float(a_number)}
+    len(dali_gt) -> == len(gt)
 
 
 You can also load the whole dali_data and update the songs that are part of the ground truth with the offset and fr parameters manually verified.
@@ -200,7 +194,8 @@ NOTE 1: Please be sure you have the last [ground truth version](https://github.c
 
 You can retrieve the audio for each annotation (if avilable) using the function dali_code.get_audio():
 
-    errors = dali_code.get_audio(dali_info, 'full_path_to_store_the_audio', skip=[], keep=[])
+    path_audio = 'full_path_to_store_the_audio'
+    errors = dali_code.get_audio(dali_info, path_audio, skip=[], keep=[])
     errors -> ['dali_id', 'youtube_url', 'error']
 
 This function can also be used to download a subset of the DALI dataset by providing the ids of the entries you either want to **skip** or to **keep**.
@@ -270,7 +265,7 @@ Let's used the extra function dali_code.annot2vector() that transforms the annot
 Let's used the other extra function dali_code.annot2frames() that transforms time in seconds into time in frames.
 
       my_annot = entry.annotations['annot']['paragraphs']
-      paragraphs = [i['time'] for i in annot2frames(my_annot, time_resolution)]
+      paragraphs = [i['time'] for i in dali_code.annot2frames(my_annot, time_resolution)]
       paragraphs --> [(49408, 94584), ..., (3080265, 3299694)]
 
 
@@ -304,7 +299,7 @@ where 'text' contains all the lines of the paragraph. Each line follows the same
 
 again, each word contains all the notes for that word to be sung:
 
-      words_1line_1paragraph = lines_first_paragraph[0]['text']
+      words_1line_1paragraph = lines_1paragraph[0]['text']
       words_1line_1paragraph[0] --> {'freq': [...], 'time': [...],
                                      'text': [note_0, note_1, ..., note_n]}
 

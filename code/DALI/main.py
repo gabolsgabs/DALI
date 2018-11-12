@@ -63,8 +63,8 @@ def update_with_ground_truth(dali, gt_file):
         gt = load_ground_truth(gt_file)
     if len(gt) > 0:
         for i in gt:
-            entry = dali[i['id']]
-            change_time(entry, i['offset'], i['fr'])
+            entry = dali[i]
+            change_time(entry, gt[i]['offset'], gt[i]['fr'])
             entry.info['ground-truth'] = True
     return dali
 
