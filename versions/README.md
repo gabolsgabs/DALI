@@ -14,7 +14,7 @@ For the **password**, please fill out the form: https://goo.gl/forms/rGgI6RQdyYX
 ### Version 1.0.
 
 * **Donwload** it in [here](https://mega.nz/#!bzQUnCyK)
-* The ground-truth in [here] --> update 12/11/2018
+* The ground-truth in [here](https://github.com/gabolsgabs/DALI/blob/master/docs/ground_truth/) --> update 12/11/2018
 * The [definiton](https://github.com/gabolsgabs/DALI/blob/master/versions/v1.0.md)
 * Here's the [paper](http://ismir2018.ircam.fr/doc/pdfs/35_Paper.pdf)
 * and the citation [bibtex](https://github.com/gabolsgabs/DALI/blob/master/citations/DALI_v1.0.bib):
