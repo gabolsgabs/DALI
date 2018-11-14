@@ -14,13 +14,14 @@ You can find a detailed explanation of how DALI has been created at:
 
 Cite this paper:
 
-      @inproceedings{Meseguer-Brocal_2018,
-      Author = {Meseguer-Brocal, Gabriel and Cohen-Hadria, Alice and Peeters Geoffroy},
-      Booktitle = {19th International Society for Music Information Retrieval Conference},
-      Editor = {ISMIR},
-      Month = {September},
-      Title = {DALI: a large Dataset of synchronized Audio, LyrIcs and notes, automatically created using teacher-student machine learning paradigm.},
-      Year = {2018}}
+>@inproceedings{Meseguer-Brocal_2018,
+	Author = {Meseguer-Brocal, Gabriel and Cohen-Hadria, Alice and Peeters, Geoffroy},
+	Booktitle = {19th International Society for Music Information Retrieval Conference},
+	Editor = {ISMIR},
+	Month = {September},
+	Title = {DALI: a large Dataset of synchronized Audio, LyrIcs and notes, automatically created using teacher-student machine learning paradigm.},
+	Year = {2018}}
+
 
 
 Here's an example of the kind of information DALI contains:
