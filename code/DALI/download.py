@@ -48,24 +48,25 @@ def get_my_ydl(directory=os.path.dirname(os.path.abspath(__file__))):
     return ydl
 
 
-def audio_from_url(url, name, ydl=None, errors=[],
-                   directory=os.path.dirname(os.path.abspath(__file__))):
+def audio_from_url(url, name, path_output, errors=[]):
     """
     Download audio from a url.
         url : str
             url of the video (after watch?v= in youtube)
         name : str
             used to store the data
-        directory : str
+        path_output : str
             path for storing the data
     """
     error = None
-    if not ydl:
-        # ydl(youtube_dl.YoutubeDL): extractor
-        ydl = get_my_ydl(name, directory)
+
+    # ydl(youtube_dl.YoutubeDL): extractor
+    ydl = get_my_ydl(path_output)
+
     ydl.params['outtmpl'] = ydl.params['outtmpl'] % {
         'ext': ydl.params['postprocessors'][0]['preferredcodec'],
         'title': name}
+
     if ydl:
         print ("Downloading " + url)
         try:

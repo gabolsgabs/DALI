@@ -157,13 +157,12 @@ def get_audio(dali_info, path_output, skip=[], keep=[]):
             list with the ids to be keeped.
     """
     errors = []
-    ydl = get_my_ydl(path_output)
     if len(keep) > 0:
         for i in dali_info[1:]:
             if i[0] in keep:
-                audio_from_url(i[-2], i[0], ydl, errors)
+                audio_from_url(i[-2], i[0], path_output, errors)
     else:
         for i in dali_info[1:]:
             if i[0] not in skip:
-                audio_from_url(i[-2], i[0], ydl, errors)
+                audio_from_url(i[-2], i[0], path_output, errors)
     return errors
