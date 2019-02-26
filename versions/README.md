@@ -9,11 +9,11 @@ There are always two numbers: version a.b.
 The definition of each version follows the standard presented at:
 [Geoffroy Peeters, Karën Fort. Towards a (better) Definition of Annotated MIR Corpora. International Society for Music Information Retrieval Conference (ISMIR), Oct 2012, Porto, Portugal. 2012.](https://hal.archives-ouvertes.fr/hal-00713074)
 
-For the **password**, please fill out the form: https://goo.gl/forms/rGgI6RQdyYXMdMaq1
+<!-- For the **password**, please fill out the form: https://goo.gl/forms/rGgI6RQdyYXMdMaq1 -->
 
 ### Version 1.0.
 
-* **Donwload** it in [here](https://mega.nz/#!bzQUnCyK)
+* **Donwload** it in [here](https://zenodo.org/record/2577915#.XHUnkNF7kUF)<!--(https://mega.nz/#!bzQUnCyK)-->
 * The ground-truth in [here](https://github.com/gabolsgabs/DALI/blob/master/versions/v1/) --> update 12/11/2018
 * The [definiton](https://github.com/gabolsgabs/DALI/blob/master/versions/v1/v1.0.md)
 * Here's the [paper](http://ismir2018.ircam.fr/doc/pdfs/35_Paper.pdf)
