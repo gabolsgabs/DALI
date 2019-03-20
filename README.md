@@ -57,11 +57,19 @@ repository<br>
 # NEWS:
 
 Ground-Truth for version 1.0 updated with 105 songs.
+Remember that DALI is a ongoing project. There are many things to solve.
 
-We are working in:
+Currently we are working in:
 * the second generation for the Singing voice detection system.
-* errors in the F0.
-* errors in local alignment.
+* solving errors for indivual notes.
+* solving errors global notas errors (songs where all the notes are place off by the same certain interval)
+* errors in local note alignments.
+
+Please, if you have any suggestion our improvement please contact us at: dali [dot] dataset [at] gmail [dot] com 
+
+For any problem with the package that deal with the annotations open an issue in this repository.
+
+Thank you.
 
 # TUTORIAL:
 
