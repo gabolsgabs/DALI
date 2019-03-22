@@ -367,3 +367,5 @@ _____
 You can contact us at:
 
 > dali dot dataset at gmail dot com
+
+This research has received funding from the French National Research Agency under the contract ANR-16-CE23-0017-01 (WASABI project) 
