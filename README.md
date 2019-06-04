@@ -167,7 +167,7 @@ You can export and import annotations a json file.
 
 ## 1.3- Ground-truth.
 
-Each dali_data has its own ground-truth [ground-truth file](https://github.com/gabolsgabs/DALI/blob/master/docs/ground_truth/).
+Each dali_data has its own ground-truth [ground-truth file](https://github.com/gabolsgabs/DALI/tree/master/versions/).
 The annotations that are part of the ground-truth are entries of the dali_data with the offset and fr parameters manually annotated.
 
 You can easily load a ground-truth file:
@@ -197,7 +197,7 @@ You can also load the whole dali_data and update the songs that are part of the 
     dali_data = dali_code.get_the_DALI_dataset(dali_data_path, gt_file=gt_file)
 
 
-NOTE 1: Please be sure you have the last [ground truth version](https://github.com/gabolsgabs/DALI/blob/master/versions/).
+NOTE 1: Please be sure you have the last [ground truth version](https://github.com/gabolsgabs/DALI/tree/master/versions/).
 
 # 2- Getting the audio.
 
