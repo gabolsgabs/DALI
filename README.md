@@ -40,6 +40,7 @@ You can find the different DALI_data versions in [here](https://github.com/gabol
 The code, denoted as **dali_code**, for reading and working with dali_data.
 It is stored in this repository and presented as a python package.
 Dali_code has its own versions controlled by this github.
+The release and stable versions can be found at [pypi](https://pypi.org/project/DALI-dataset/).
 
 repository<br>
 ├── code<br>
@@ -65,7 +66,7 @@ Currently we are working in:
 * solving errors global notas errors (songs where all the notes are place off by the same certain interval)
 * errors in local note alignments.
 
-Please, if you have any suggestion our improvement please contact us at: dali [dot] dataset [at] gmail [dot] com 
+Please, if you have any suggestion our improvement please contact us at: dali [dot] dataset [at] gmail [dot] com
 
 For any problem with the package that deal with the annotations open an issue in this repository.
 
@@ -77,17 +78,21 @@ First of all, [download](https://github.com/gabolsgabs/DALI/blob/master/versions
 
 
 ## 0- Installing Dali_code.
-Go to folder DALI/code and run:
+For the release and stable versions just run the command:
+
+  >  pip install dali-dataset
+
+For non-release and unstable versions  you can install them manually going to folder DALI/code and running:
 
   >  pip install .
 
 You can upgrade DALI for future version with:
 
-  >  pip install . --upgrade
+  >  pip install dali-dataset --upgrade
 
 DALI can be uninstalled with:
 
-  >  pip uninstall DALI-dataset
+  >  pip uninstall dali-dataset
 
 Requirements: **numpy** and **youtube_dl**
 
@@ -368,4 +373,4 @@ You can contact us at:
 
 > dali dot dataset at gmail dot com
 
-This research has received funding from the French National Research Agency under the contract ANR-16-CE23-0017-01 (WASABI project) 
+This research has received funding from the French National Research Agency under the contract ANR-16-CE23-0017-01 (WASABI project)
