@@ -54,7 +54,7 @@ class Annotations(object):
                 self.annotations['type'] = 'vertical'
             else:
                 print('Annot are already in a horizontal format')
-        except Exception as e:
+        except Exception:
             print('ERROR: unknow type of annotations')
         return
 
@@ -67,7 +67,7 @@ class Annotations(object):
                 self.annotations['type'] = 'horizontal'
             else:
                 print('Annot are already in a vertical format')
-        except Exception as e:
+        except Exception:
             print('ERROR: unknow type of annotations')
         return
 
@@ -113,41 +113,52 @@ class Annotations(object):
         self.info['scores']['NCC'] = dist
         return
 
-    def change_time(self, new_offset=None, new_fr=None):
+    def _prepare_annot_for_change(self):
         t = 'horizontal'
-        fr = self.annotations['annot_param']['fr']
-        offset = self.annotations['annot_param']['offset']
-        if new_fr is None:
-            new_fr = fr
-        if new_offset is None:
-            new_offset = offset
-        args = (fr, offset, new_fr, new_offset)
-        self.annotations['annot_param']['fr'] = new_fr
-        self.annotations['annot_param']['offset'] = new_offset
         if self.annotations['type'] == 'vertical':
             t = 'vertical'
             self.vertical2horizontal()
+        return t
+
+    def change_time(self, new_offset=None, new_fr=None):
+        fr = self.annotations['annot_param']['fr']
+        if new_fr is None:
+            new_fr = fr
+        self.annotations['annot_param']['fr'] = new_fr
+        if new_offset is None:
+            self.annotations['annot_param']['offset'] = new_offset
+        t = self._prepare_annot_for_change()
         for key, value in self.annotations['annot'].items():
-            value = uta.compute_new_time(value, *args)
+            value = uta.compute_new_time(value, fr, new_fr, new_offset)
         if t == 'vertical':
             self.horizontal2vertical()
         return
 
-    def get_annot_as_vector(self, time_r=0.014, t='voice', g='notes'):
+    def change_notes(self, bins_transposition=0):
+        t = self._prepare_annot_for_change()
+        for key, value in self.annotations['annot'].items():
+            value = uta.compute_new_notes(value, bins_transposition)
+        if t == 'vertical':
+            self.horizontal2vertical()
+        return
+
+    def get_annot_as_vector(self, time_r=0.014, dur=0, t='voice', g='notes'):
         """Transforms the annotations into frame vector wrt a time resolution.
         See annot2vector at extra.py for mor info.
         """
         vector = None
         try:
-            dur = end_song(self.info['audio']['path'])
+            if not dur:
+                dur = end_song(self.info['audio']['path'])
             my_annot = copy.deepcopy(self.annotations['annot'][g])
             vector = annot2vector(my_annot, dur, time_r, t)
-        except Exception as e:
+        except Exception:
             print("ERROR: no audio track at .info['audio']['path']")
         return vector
 
     def get_annot_as_vector_chopping(
-        self, time_r=6.25e-05, win_bin=736, hop_bin=224, t='voice', g='notes'
+        self, time_r=6.25e-05, dur=0, win_bin=736, hop_bin=224, t='voice',
+        g='notes'
     ):
         """
         Transforms the annotations into a frame vector by:
@@ -158,11 +169,12 @@ class Annotations(object):
         """
         vector = None
         try:
-            dur = end_song(self.info['audio']['path'])
+            if not dur:
+                dur = end_song(self.info['audio']['path'])
             my_annot = copy.deepcopy(self.annotations['annot'][g])
             vector = annot2vector_chopping(
                 my_annot, dur, time_r, win_bin, hop_bin, t)
-        except Exception as e:
+        except Exception:
             print("ERROR: no audio track at .info['audio']['path']")
         return vector
 
