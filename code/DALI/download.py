@@ -76,4 +76,4 @@ def audio_from_url(url, name, path_output, errors=[]):
             error = e
     if error:
         errors.append([name, url, error])
-    return
+    return os.path.join(path_output, name, '.mp3')

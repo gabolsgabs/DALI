@@ -36,27 +36,6 @@ def generator_folder(folder_pth, skip=[], keep=[]):
                                                       print_error=True), skip)
 
 
-def change_time(entry, new_offset=None, new_fr=None):
-    type = 'horizontal'
-    fr = entry.annotations['annot_param']['fr']
-    offset = entry.annotations['annot_param']['offset']
-    if new_fr is None:
-        new_fr = fr
-    if new_offset is None:
-        new_offset = offset
-    args = (fr, offset, new_fr, new_offset)
-    entry.annotations['annot_param']['fr'] = new_fr
-    entry.annotations['annot_param']['offset'] = new_offset
-    if entry.annotations['type'] == 'vertical':
-        type = 'vertical'
-        entry.vertical2horizontal()
-    for key, value in entry.annotations['annot'].items():
-        value = ut.compute_new_time(value, *args)
-    if type == 'vertical':
-        entry.horizontal2vertical()
-    return
-
-
 def update_with_ground_truth(dali, gt_file):
     gt = []
     if ut.check_file(gt_file, print_error=False):
@@ -64,7 +43,7 @@ def update_with_ground_truth(dali, gt_file):
     if len(gt) > 0:
         for i in gt:
             entry = dali[i]
-            change_time(entry, gt[i]['offset'], gt[i]['fr'])
+            entry.change_time(gt[i]['offset'], gt[i]['fr'])
             entry.info['ground-truth'] = True
     return dali
 
