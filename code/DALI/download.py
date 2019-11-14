@@ -68,7 +68,7 @@ def audio_from_url(url, name, path_output, errors=[]):
         'title': name}
 
     if ydl:
-        print ("Downloading " + url)
+        print("Downloading " + url)
         try:
             ydl.download([base_url + url])
         except Exception as e:

@@ -1,8 +1,4 @@
 import copy
-import DALI
-from keras.models import load_model
-from .utilities_audio import (end_song, read_MP3)
-from .svp import get_svp
 import numpy as np
 
 
@@ -37,8 +33,7 @@ def crosscorrelation(base, query):
     return dist, confi, delay, images
 
 
-def align_brute_force(entry, model, g, r=(1./100), s=.2):
-    audio = entry.info['audio']['path']
+def align_brute_force(entry, pred, g, r=(1./100), s=.2):
     ref_fr = entry.annotations['annot_param']['fr']
     ref_offset = entry.annotations['annot_param']['offset']
     rng = ref_fr*r
@@ -46,7 +41,6 @@ def align_brute_force(entry, model, g, r=(1./100), s=.2):
     time_r = 0.014
     best = [0., 0., 0.]
     print("Aligning " + entry.info['artist'] + ' ' + entry.info['title'])
-    pred = get_svp(audio, model=model)
     for fr in np.arange(ref_fr-rng-step, ref_fr+rng+step, step):
         tmp = copy.deepcopy(entry)
         tmp.change_time(new_fr=fr)
@@ -59,8 +53,7 @@ def align_brute_force(entry, model, g, r=(1./100), s=.2):
     return best
 
 
-def align_offset(entry, model, g):
-    pred = get_svp(entry.info['audio']['path'], model=model)
+def align_offset(entry, pred, g):
     print("Aligning " + entry.info['artist'] + ' ' + entry.info['title'])
     time_r = 0.014
     annot = entry.get_annot_as_vector_chopping()

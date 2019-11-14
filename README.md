@@ -81,7 +81,7 @@ DALI can be uninstalled with:
 
   >  pip uninstall DALI-dataset
 
-Requirements: **numpy** and **youtube_dl**
+Requirements: **numpy**, **youtube_dl**, **librosa** and **ffmpeg**
 
 **NOTE**: the version of the code in pip only refers to the code itself. The different versions of the Dali_data can be found above.
 

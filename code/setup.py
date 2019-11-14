@@ -13,7 +13,7 @@ setup(name='DALI-dataset',
       long_description=long_description,
       long_description_content_type="text/markdown",
       #  https://help.github.com/articles/licensing-a-repository/#disclaimer
-      packages=['DALI'],
+      packages=['DALI', 'DALI_SVP'],
       include_package_data=True,
-      install_requires=['youtube_dl'],
+      install_requires=['youtube_dl', 'librosa'],
       zip_safe=False)

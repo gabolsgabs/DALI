@@ -14,8 +14,8 @@ xml_template = os.path.join(pth, 'files/template.xml')
 # ----------------------------------XML-------------------------------
 
 
-def addsemgnet(parent, text, attrib, tag=sculpt_segment_tag,
-               sub_tag=sculpt_freetype_tag):
+def add_semgnet(parent, text, attrib, tag=sculpt_segment_tag,
+                sub_tag=sculpt_freetype_tag):
 
     element = parent.makeelement(tag, attrib)
     sub = ET.SubElement(element, sub_tag)
@@ -51,13 +51,13 @@ def write_annot_xml(annot, name, path_save, xml_template=xml_template):
     # segments = root.findall(sculpt_segment_tag)
 
     for point in annot:
-        addsemgnet(root, point['text'], attrib=create_xml_attrib(point))
+        add_semgnet(root, point['text'], attrib=create_xml_attrib(point))
 
     """
     for line in segmented_lyrics.lines:
-        addsemgnet(root, line['text'], attrib=create_xml_attrib(line))
+        add_semgnet(root, line['text'], attrib=create_xml_attrib(line))
     for word in segmented_lyrics.words:
-        addsemgnet(root, word['text'], attrib=create_xml_attrib(word))
+        add_semgnet(root, word['text'], attrib=create_xml_attrib(word))
     """
 
     segment = root.findall(sculpt_segment_tag)

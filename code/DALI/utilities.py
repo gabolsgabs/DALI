@@ -12,7 +12,6 @@ import json
 import numpy as np
 import os
 import pickle
-import subprocess as sp
 
 # ------------------------ READING INFO ----------------
 
@@ -82,7 +81,7 @@ def write_in_gzip(pth, name, data, print_error=False):
         save_name = os.path.join(pth, name)
         try:
             gz = gzip.open(save_name + '.gz', 'wb')
-        except Exception as e:
+        except Exception:
             gz = gzip.open(save_name + '.gz', 'w')
         gz.write(pickle.dumps(data, protocol=2))
         gz.close()
@@ -96,7 +95,7 @@ def write_in_json(pth, name, data, print_error=False):
         try:
             with open(save_name + '.json', 'wb') as outfile:
                 json.dump(data, outfile)
-        except Exception as e:
+        except Exception:
             with open(save_name + '.json', 'w') as outfile:
                 json.dump(data, outfile)
     return
@@ -109,7 +108,7 @@ def read_gzip(fl, print_error=False):
         try:
             with gzip.open(fl, 'rb') as f:
                 output = pickle.load(f)
-        except Exception as e:
+        except Exception:
             with gzip.open(fl, 'r') as f:
                 output = pickle.load(f)
     return output
@@ -122,7 +121,7 @@ def read_json(fl, print_error=False):
         try:
             with open(fl, 'rb') as outfile:
                 output = json.load(outfile)
-        except Exception as e:
+        except Exception:
             with open(fl, 'r') as outfile:
                 output = json.load(outfile)
     return output
@@ -207,7 +206,7 @@ def get_text(text, output=[], m=False):
     f = lambda x: isinstance(x, unicode) or isinstance(x, str)
     try:
         f('whatever')
-    except Exception as e:
+    except Exception:
         f = lambda x: isinstance(x, str)
     if isinstance(text, list):
         tmp = [get_text(i['text'], output) for i in text]

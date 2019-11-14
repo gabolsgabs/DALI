@@ -83,14 +83,14 @@ class Annotations(object):
             output = True
         return output
 
-    def realign(self, path_audio, model, p='both', g='notes'):
+    def realign(self, path_audio, pred, p='both', g='notes'):
         """Align the annotations to a new audio track.
         Parameters
         ----------
         path_audio : text
             New audio to which the annotation will be globally adapted.
-        model : .h5
-            Keras model that compute the Singing voice probability vectro (SVP)
+        pred : np.array
+            a singing voice probability vector (SVP)
         p : text
             Parameter to modify for the aligment. By default is set to 'both'
             (frame rate and offset). It can be also 'offset'.
@@ -106,9 +106,9 @@ class Annotations(object):
             print("Transforming annots to horizontal format needed for aligning")
         self.info['audio']['path'] = path_audio
         if p == 'both':
-            dist, fr, offset = align_brute_force(self, model=model, g=g)
+            dist, fr, offset = align_brute_force(self, pred=pred, g=g)
         elif p == 'offset':
-            dist, offset = align_offset(self, model=model, g=g)
+            dist, offset = align_offset(self, pred=pred, g=g)
         self.change_time(new_offset=offset, new_fr=fr)
         self.info['scores']['NCC'] = dist
         return
