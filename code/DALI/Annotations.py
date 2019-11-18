@@ -3,7 +3,9 @@
 GABRIEL MESEGUER-BROCAL 2018
 """
 import copy
-from .extra import (unroll, roll, annot2vector, annot2vector_chopping)
+from .extra import (
+    unroll, roll, annot2vector, annot2vector_chopping, annot2matrix
+)
 from .align import (align_brute_force, align_offset)
 from .download import audio_from_url
 from . import utilities as ut
@@ -177,6 +179,20 @@ class Annotations(object):
         except Exception:
             print("ERROR: no audio track at .info['audio']['path']")
         return vector
+
+    def get_annot_as_matrix(self, time_r, dur=0, t='notes', g='notes'):
+        """Transforms the annotations into frame vector wrt a time resolution.
+        See annot2vector at extra.py for mor info.
+        """
+        matrix = None
+        try:
+            if not dur:
+                dur = end_song(self.info['audio']['path'])
+            my_annot = copy.deepcopy(self.annotations['annot'][g])
+            matrix = annot2matrix(my_annot, time_r, dur, t)
+        except Exception:
+            print("ERROR: no audio track at .info['audio']['path']")
+        return matrix
 
     def get_audio(self, path_output):
         self.info['audio']['path'] = audio_from_url(

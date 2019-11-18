@@ -202,6 +202,31 @@ You can retrieve the audio for each annotation (if avilable) using the function 
 This function can also be used to download a subset of the DALI dataset by providing the ids of the entries you either want to **skip** or to **keep**.
 
 
+## 2.1- Recomputing the aligning for a different audio file.
+
+If you retrieve a different audio file you can recompute the global alignment of an annotation to it.
+Given an annotation:
+
+    entry = dali_data['a_dali_unique_id']
+
+and an audio file:
+
+    path_to_the_audio_file = 'my_audio_file.mp3'
+
+**1**: computing the singing voice probability vector (SVP):
+
+    from DALI_SVP import get_svp
+    from tensorflow.keras.models import load_model
+    model = load_model('your_model')  # you can find a pre-trained model at /docs/models/second_generation.h5
+    svp = get_svp(path_to_the_audio_file, model)
+
+**2**: re-align an annotation file:
+
+    entry.realign(path_audio=path_to_the_audio_file, pred=svp)
+
+You can use the parameters *p='both'*, *g='notes'* to control the kind of alignment to be performed. *p* can be 'offset' for aligning the annotations changing only the 'offset' parameter or 'both' for changing the 'offset' and 'frame rate' parameters. *g* defines the granularity used to compute the Annotation voice sequence (avs).
+
+
 # 3- Working with DALI.
 
 Annotations are in:

@@ -8,8 +8,6 @@ GABRIEL MESEGUER-BROCAL 2018
 import numpy as np
 import subprocess as sp
 
-# ------------------------ AUDIO ----------------
-
 
 def end_song(filename):
     """Get duration from a given audio"""

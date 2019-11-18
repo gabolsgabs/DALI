@@ -12,6 +12,8 @@ import copy
 import numpy as np
 from .download import audio_from_url
 from . import utilities_annot as uta
+from .utilities_annot import find_nearest
+from .features_list import FREQS, PHONEMES, CHAR, PHONEMES_TYPE, PHONEMES_DICT
 
 
 def unroll(annot):
@@ -33,6 +35,8 @@ def roll(annot):
     """
     tmp = copy.deepcopy(annot)
     output = uta.roll(tmp['notes'], tmp['words'])
+    # if 'phonemes' in tmp:
+    #     output = uta.roll(output, tmp['phonemes'])
     output = uta.roll(output, tmp['lines'])
     output = uta.roll(output, tmp['paragraphs'])
     return {'hierarchical': output}
@@ -69,7 +73,7 @@ def annot2frames(annot, time_r, t='horizontal', depth=3):
                     output = roll(vertical[i], vertical[i+1])
                 else:
                     output = roll(output, vertical[i+1])
-    except Exception as e:
+    except Exception:
         print('ERROR: unknow type of annotations')
     return output
 
@@ -82,7 +86,7 @@ def annot2vector(annot, duration, time_r, t='voice'):
         annot : list
             annotations only horizontal level
             (for example: annotations['annot']['lines'])
-        dur : float
+        duration : float
             duration of the vector (for adding zeros).
         time_r : float
             time resolution for discriticing the time.
@@ -91,15 +95,63 @@ def annot2vector(annot, duration, time_r, t='voice'):
             'notes': each frame has the freq value of the main vocal melody.
     """
     singal = np.zeros(int(duration / time_r))
-    for note in annot:
-        b, e = note['time']
+    for info in annot:
+        b, e = info['time']
         b = np.round(b/time_r).astype(int)
         e = np.round(e/time_r).astype(int)
         if t == 'voice':
             singal[b:e+1] = 1
         if t == 'melody':
-            singal[b:e+1] = np.mean(note['freq'])
+            singal[b:e+1] = np.mean(info['freq'])
     return singal
+
+
+def annot2matrix(annot, time_r, dur, t):
+    """Transforms the annotations into frame vector wrt a time resolution.
+
+    Parameters
+    ----------
+        annot : list
+            annotations only horizontal level
+            (for example: annotations['annot']['notes'])
+        time_r : float
+            time resolution for discriticing the time.
+        t : str
+            'notes':
+            'char':
+            'phoneme':
+            'phoneme_type':
+    """
+    if t == 'chars':
+        features = CHAR
+    if t == 'phonemes':
+        features = PHONEMES
+    if t == 'phoneme_types':
+        features = PHONEMES_TYPE
+    if t == 'notes':
+        features = FREQS
+    signal = np.zeros((len(features)+1, np.round(dur/time_r).astype(int)+1))
+    signal[-1, :] = 1    # adding a blank value
+    for info in annot:
+        b, e = info["time"]
+        b = np.round(b / time_r).astype(int)
+        e = np.round(e / time_r).astype(int)
+        if t == "notes":
+            value, bin = find_nearest(features, info['freq'][0])
+            # earsing the blank value
+            signal[:, b:e + 1] = 0
+            signal[bin, b:e + 1] = 1
+        if t == 'chars' or t == 'phonemes' or t == 'phoneme_types':
+            if t == 'phoneme_types':
+                info['text'] = [PHONEMES_DICT[i] for i in info['text']]
+
+            for dx, i in enumerate(info['text']):
+                if i in features:
+                    # earsing the blank value
+                    if dx == 0:
+                        signal[:, b:e + 1] = 0
+                    signal[features.index(i), b:e + 1] = dx+1
+    return signal
 
 
 def annot2vector_chopping(annot, dur, time_r, win_bin, hop_bin, t='voice'):
@@ -134,7 +186,7 @@ def annot2vector_chopping(annot, dur, time_r, win_bin, hop_bin, t='voice'):
         v = hop_bin*np.arange(int((len(singal)-win_bin)/hop_bin+1))
         output = np.array([np.sum(win[::-1]*singal[i:i+win_bin])/win_sum
                            for i in v]).T
-    except Exception as e:
+    except Exception:
         print('ERROR: unknow type of annotations')
     return output
 

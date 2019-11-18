@@ -1,10 +1,6 @@
-/code/DALI/cross-correlation.py
-/code/DALI/my_helper.py
-/code/DALI/ground_truth.py
-/code/DALI/exp_alginment.py
-/code/DALI/get_audio.py
-/code/DALI/melody.py
+/code/DALI/others/*
 /code/DALI/to_phoneme.py
+/docs/models/student_both.h5
 /images/graphs.key
 Icon?
 
