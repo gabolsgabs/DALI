@@ -11,6 +11,7 @@ from .download import audio_from_url
 from . import utilities as ut
 from . import utilities_annot as uta
 from .utilities_audio import end_song
+from .features_list import FREQS
 
 
 class Annotations(object):
@@ -136,7 +137,7 @@ class Annotations(object):
             self.horizontal2vertical()
         return
 
-    def change_notes(self, bins_transposition=0):
+    def change_notes(self, bins_transposition=0, ref_freqs=FREQS):
         t = self._prepare_annot_for_change()
         for key, value in self.annotations['annot'].items():
             value = uta.compute_new_notes(value, bins_transposition)

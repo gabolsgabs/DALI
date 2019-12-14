@@ -30,4 +30,9 @@ The definition of each version follows the standard presented at:
 
 ### Version 2.0.
 
-##### Soon
+* **Donwload** it in [here]()
+* The [definiton](https://github.com/gabolsgabs/DALI/blob/master/versions/v1/v1.0.md)
+* Here's the [paper]()
+* and the citation [bibtex]():
+
+      @{}

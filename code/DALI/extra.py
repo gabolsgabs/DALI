@@ -94,16 +94,16 @@ def annot2vector(annot, duration, time_r, t='voice'):
             'voice': each frame has a value 1 or 0 for voice or not voice.
             'notes': each frame has the freq value of the main vocal melody.
     """
-    singal = np.zeros(int(duration / time_r))
+    signal = np.zeros(int(duration / time_r))
     for info in annot:
         b, e = info['time']
         b = np.round(b/time_r).astype(int)
         e = np.round(e/time_r).astype(int)
         if t == 'voice':
-            singal[b:e+1] = 1
+            signal[b:e+1] = 1
         if t == 'melody':
-            singal[b:e+1] = np.mean(info['freq'])
-    return singal
+            signal[b:e+1] = np.mean(info['freq'])
+    return signal
 
 
 def annot2matrix(annot, time_r, dur, t):
@@ -144,12 +144,10 @@ def annot2matrix(annot, time_r, dur, t):
         if t == 'chars' or t == 'phonemes' or t == 'phoneme_types':
             if t == 'phoneme_types':
                 info['text'] = [PHONEMES_DICT[i] for i in info['text']]
-
+            # earsing the blank value
+            signal[:, b:e + 1] = 0
             for dx, i in enumerate(info['text']):
                 if i in features:
-                    # earsing the blank value
-                    if dx == 0:
-                        signal[:, b:e + 1] = 0
                     signal[features.index(i), b:e + 1] = dx+1
     return signal
 
@@ -158,7 +156,7 @@ def annot2vector_chopping(annot, dur, time_r, win_bin, hop_bin, t='voice'):
     """
     Transforms the annotations into a frame vector by:
 
-        1 - creating a vector singal for a give sample rate
+        1 - creating a vector signal for a give sample rate
         2 - chopping it using the given hop and wind size.
 
     Parameters
@@ -180,11 +178,11 @@ def annot2vector_chopping(annot, dur, time_r, win_bin, hop_bin, t='voice'):
     """
     output = []
     try:
-        singal = annot2vector(annot, dur, time_r, t)
+        signal = annot2vector(annot, dur, time_r, t)
         win = np.hanning(win_bin)
         win_sum = np.sum(win)
-        v = hop_bin*np.arange(int((len(singal)-win_bin)/hop_bin+1))
-        output = np.array([np.sum(win[::-1]*singal[i:i+win_bin])/win_sum
+        v = hop_bin*np.arange(int((len(signal)-win_bin)/hop_bin+1))
+        output = np.array([np.sum(win[::-1]*signal[i:i+win_bin])/win_sum
                            for i in v]).T
     except Exception:
         print('ERROR: unknow type of annotations')

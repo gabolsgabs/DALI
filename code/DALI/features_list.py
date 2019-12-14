@@ -25,11 +25,11 @@ CHAR = [" ", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
         "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "'"]
 
 
-BINS_PER_OCTAVE = 36
-BINS_PER_SEMITONE = 3
-N_OCTAVES = 6
+BINS_PER_SEMITONE = 1
+BINS_PER_OCTAVE = 12*BINS_PER_SEMITONE
+N_OCTAVES = 8
 SR = 22050
-FMIN = 40
+FMIN = librosa.note_to_hz('C1')
 HOP_LENGTH = 256
 FREQS = librosa.cqt_frequencies(
     n_bins=N_OCTAVES * BINS_PER_OCTAVE, fmin=FMIN,

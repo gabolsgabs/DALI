@@ -55,9 +55,9 @@ def find_nearest(array, value):
 
 def compute_new_notes(lst, bins_trans, freqs=FREQS):
     for e in lst:
-        _, idx = find_nearest(freqs, e['freq'][0])
-        new_freq = freqs[idx+bins_trans]
-        e['freq'] = (new_freq, new_freq)
+        _, idx_b = find_nearest(freqs, e['freq'][0])
+        _, idx_e = find_nearest(freqs, e['freq'][1])
+        e['freq'] = (freqs[idx_b+bins_trans], freqs[idx_e+bins_trans])
     return lst
 
 
