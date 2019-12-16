@@ -41,45 +41,59 @@ The code, denoted as **dali_code**, for reading and working with dali_data.
 It is stored in this repository and presented as a python package.
 Dali_code has its own versions controlled by this github.
 
-repository<br>
-├── code<br>
-│   ├── DALI<br>
-│   │   ├── \_\_init\_\_.py<br>
-│   │   ├── Annotations.py<br>
-│   │   ├── main.py<br>
-│   │   ├── utilities.py<br>
-│   │   ├── extra.py<br>
-│   │   ├── download.py<br>
-│   │   ├── vizualization.py<br>
-│   └── setup.py<br>
+    ├── code
+    │   ├── DALI
+    │   │   ├── Annotations.py
+    │   │   ├── __init__.py
+    │   │   ├── align.py
+    │   │   ├── download.py
+    │   │   ├── extra.py
+    │   │   ├── f0_correlation.py
+    │   │   ├── features_list.py
+    │   │   ├── files
+    │   │   │   └── template.xml
+    │   │   ├── main.py
+    │   │   ├── utilities.py
+    │   │   ├── utilities_annot.py
+    │   │   ├── utilities_audio.py
+    │   │   ├── vizualization.py
+    │   ├── DALI_SVP
+    │   │   ├── __init__.py
+    │   │   └── svp.py
+    │   ├── LICENSE
+    │   ├── MANIFEST.in
+    │   ├── README.md
+    │   └── setup.py
 
 
 # NEWS:
 
-Ground-Truth for version 1.0 updated with 105 songs.
-
-We are working in:
-* the second generation for the Singing voice detection system.
-* errors in the F0.
-* errors in local alignment.
 
 # TUTORIAL:
+
+-- THIS TUTORIAL WILL BE MOVE TO A JUPITER NOTEBOOK SOON --
 
 First of all, [download](https://github.com/gabolsgabs/DALI/blob/master/versions/) your Dali_data version and clone this repository.
 
 
 ## 0- Installing Dali_code.
-Go to folder DALI/code and run:
+<!--- For the release and stable versions just run the command:
 
-  >  pip install .
+  > pip install dali-dataset
+--->
+
+For non-release and unstable versions you can install them manually going to folder DALI/code and running:
+
+  > pip install .
 
 You can upgrade DALI for future version with:
 
-  >  pip install . --upgrade
+    pip install dali-dataset --upgrade
 
 DALI can be uninstalled with:
 
-  >  pip uninstall DALI-dataset
+    pip uninstall dali-dataset
+
 
 Requirements: **numpy**, **youtube_dl**, **librosa** and **ffmpeg**
 
@@ -126,7 +140,12 @@ Each annotation instance has two attributes: **info** and **annotations**.
                     'dataset_version': 1.0,     **# dali_data version**
                     'ground-truth': False,     
                     'scores': {'NCC': 0.8098520072498807,
-                               'manual': 0.0},  **# Not ready yet**
+                               'manual': 0.0,  **# Not ready yet**,
+                               'pitch': {'Overall Accuracy': 0.55,
+                                         'Raw Pitch Accuracy': 0.53,
+                                         'Raw Chroma Accuracy': 0.59,
+                                         'Voicing Recall': 0.57,
+                                         'Voicing False Alarm': 0.19}}
                     'audio': {'url': 'a youtube url',
                               'path': 'None',   
                               **# To you to modify it to point to your local audio file**
@@ -158,6 +177,8 @@ You can export and import annotations a json file.
 
 
 ## 1.3- Ground-truth.
+
+NOTE: only for version 1.
 
 Each dali_data has its own ground-truth [ground-truth file](https://github.com/gabolsgabs/DALI/blob/master/docs/ground_truth/).
 The annotations that are part of the ground-truth are entries of the dali_data with the offset and fr parameters manually annotated.
@@ -246,7 +267,7 @@ It is the default format.
 
     entry.vertical2horizontal() --> 'Annot are already in a vertical format'
     entry.annotations['type'] --> 'horizontal'
-    entry.annotations['annot'].keys() --> ['notes', 'lines', 'words', 'paragraphs']
+    entry.annotations['annot'].keys() --> ['notes', 'lines', 'words', 'phonemes', 'paragraphs']
 
 Each level contains a list of annotation where each element has:
 
@@ -270,7 +291,7 @@ You can export the annotations of each individual level to a xml or text file to
 
 
 ### 3.1.2- Examples.
-This format is ment to be use for working with each level individually.
+This format is meant to be use for working with each level individually.
 > Example 1: recovering the main vocal melody.
 
 Let's used the extra function dali_code.annot2vector() that transforms the annotations into a vector. There are two types of vector:
@@ -282,9 +303,13 @@ Let's used the extra function dali_code.annot2vector() that transforms the annot
       time_resolution = 0.014
       # the value dur is just an example you should use the end of your audio file
       end_of_the_song =  entry.annotations['annot']['notes'][-1]['time'][1] + 10
-      melody = dali_code.annot2vector(my_annot, end_of_the_song, time_resolution, type='melody')
+      melody = entry.get_annot_as_vector(dur=end_of_the_song, time_resolution, type='melody', g='notes')
 
-**NOTE: have a look to dali_code.annot2vector_chopping() for computing a vector chopped with respect to a given window and hop size.**
+**NOTE: have a look to get_annot_as_vector_chopping() for computing a vector chopped with respect to a given window and hop size.**
+
+      phonemes_matrix = = entry.get_annot_as_matrix(time_r, dur=end_of_the_song, t='phonemes', g='phonemes')
+
+There are four **'t'** type of features: 'chars' for the characters, 'phonemes', 'phoneme_types' and 'notes'.
 
 > Example 2: find the audio frames that define each paragraph.
 

@@ -25,7 +25,10 @@ def unroll(annot):
     l, _ = uta.unroll(tmp, depth=1, output=[])
     w, _ = uta.unroll(tmp, depth=2, output=[])
     m, _ = uta.unroll(tmp, depth=3, output=[])
-    return {'paragraphs': p, 'lines': l, 'words': w, 'notes': m}
+    return {
+        'paragraphs': p, 'lines': l, 'words': w, 'notes': m,
+        'phonemes': annot['phonemes']
+    }
 
 
 def roll(annot):
@@ -39,7 +42,7 @@ def roll(annot):
     #     output = uta.roll(output, tmp['phonemes'])
     output = uta.roll(output, tmp['lines'])
     output = uta.roll(output, tmp['paragraphs'])
-    return {'hierarchical': output}
+    return {'hierarchical': output, 'phonemes': tmp['phonemes']}
 
 
 def annot2frames(annot, time_r, t='horizontal', depth=3):
