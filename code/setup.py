@@ -15,5 +15,5 @@ setup(name='DALI-dataset',
       #  https://help.github.com/articles/licensing-a-repository/#disclaimer
       packages=['DALI', 'DALI_SVP'],
       include_package_data=True,
-      install_requires=['youtube_dl', 'librosa'],
+      install_requires=['youtube_dl', 'librosa', 'pandas'],
       zip_safe=False)

@@ -4,7 +4,8 @@ GABRIEL MESEGUER-BROCAL 2018
 """
 import copy
 from .extra import (
-    unroll, roll, annot2vector, annot2vector_chopping, annot2matrix
+    unroll, roll, annot2vector, annot2vector_chopping, annot2matrix,
+    annot2pandas
 )
 from .align import (align_brute_force, align_offset)
 from .download import audio_from_url
@@ -194,6 +195,14 @@ class Annotations(object):
         except Exception:
             print("ERROR: no audio track at .info['audio']['path']")
         return matrix
+
+    def get_annot_as_pandas(self, g='words'):
+        df = None
+        try:
+            df = annot2pandas(copy.deepcopy(self.annotations['annot'][g]), g)
+        except Exception:
+            print("ERROR: while computing the pandas")
+        return df
 
     def get_audio(self, path_output):
         self.info['audio']['path'] = audio_from_url(

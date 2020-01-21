@@ -9,6 +9,8 @@ to a vector representation.
 GABRIEL MESEGUER-BROCAL 2018
 """
 import copy
+import pandas as pd
+import re
 import numpy as np
 from .download import audio_from_url
 from . import utilities_annot as uta
@@ -219,3 +221,19 @@ def get_audio(dali_info, path_output, skip=[], keep=[]):
             if i[0] not in skip:
                 _ = audio_from_url(i[-2], i[0], path_output, errors)
     return errors
+
+
+def annot2pandas(annot, g):
+    columns = ['text', 'init', 'end']
+    if g == 'phonemes':
+        annot = [{'text': t, 'time': i['time']}
+                 for i in annot for t in i['text']]
+    df = pd.DataFrame(
+        np.zeros((len(annot), len(columns))), columns=columns)
+    df['text'] = df['text'].astype('str')
+    for i, v in enumerate(annot):
+        text = "".join(re.findall(r"[a-zA-Z]", v['text']))
+        df.at[i, 'text'] = text
+        df.at[i, 'init'] = v['time'][0]
+        df.at[i, 'end'] = v['time'][1]
+    return df
