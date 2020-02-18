@@ -33,7 +33,7 @@ def crosscorrelation(base, query):
     return dist, confi, delay, images
 
 
-def align_brute_force(entry, pred, g, r=(1./100), s=.2, time_r=0.014):
+def align_brute_force(entry, pred, g, r=(1./100), s=.2, time_r=0.014, dur=None):
     ref_fr = entry.annotations['annot_param']['fr']
     ref_offset = entry.annotations['annot_param']['offset']
     rng = ref_fr*r
@@ -43,7 +43,7 @@ def align_brute_force(entry, pred, g, r=(1./100), s=.2, time_r=0.014):
     for fr in np.arange(ref_fr-rng-step, ref_fr+rng+step, step):
         tmp = copy.deepcopy(entry)
         tmp.change_time(new_fr=fr)
-        annot = tmp.get_annot_as_vector_chopping()
+        annot = tmp.get_annot_as_vector_chopping(dur)
         dist, _, delay, _ = crosscorrelation(pred, annot)
         if dist > best[0]:
             best[0] = dist
