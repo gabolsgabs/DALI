@@ -33,12 +33,11 @@ def crosscorrelation(base, query):
     return dist, confi, delay, images
 
 
-def align_brute_force(entry, pred, g, r=(1./100), s=.2):
+def align_brute_force(entry, pred, g, r=(1./100), s=.2, time_r=0.014):
     ref_fr = entry.annotations['annot_param']['fr']
     ref_offset = entry.annotations['annot_param']['offset']
     rng = ref_fr*r
     step = rng*s
-    time_r = 0.014
     best = [0., 0., 0.]
     print("Aligning " + entry.info['artist'] + ' ' + entry.info['title'])
     for fr in np.arange(ref_fr-rng-step, ref_fr+rng+step, step):
@@ -53,9 +52,8 @@ def align_brute_force(entry, pred, g, r=(1./100), s=.2):
     return best
 
 
-def align_offset(entry, pred, g):
+def align_offset(entry, pred, g, time_r=0.014):
     print("Aligning " + entry.info['artist'] + ' ' + entry.info['title'])
-    time_r = 0.014
     annot = entry.get_annot_as_vector_chopping()
     dist, _, delay, _ = crosscorrelation(pred, annot)
     ref_offset = entry.annotations['annot_param']['offset']
