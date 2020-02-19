@@ -129,8 +129,10 @@ class Annotations(object):
         if new_fr is None:
             new_fr = fr
         self.annotations['annot_param']['fr'] = new_fr
+        offset = self.annotations['annot_param']['offset']
         if new_offset is None:
-            self.annotations['annot_param']['offset'] = new_offset
+            new_offset = offset
+        self.annotations['annot_param']['offset'] = new_offset
         t = self._prepare_annot_for_change()
         for key, value in self.annotations['annot'].items():
             value = uta.compute_new_time(value, fr, new_fr, new_offset)
