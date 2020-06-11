@@ -1,3 +1,4 @@
 Copyright © Ircam 2018
-This package is distributed under the Academic Free License ("AFL") v. 3.0.
-For more information read the LICENSE.txt
+DALI by Gabriel Meseguer-Brocal, Alice Cohen-Hadrian and Peeters Geoffroy.
+DALI is offered free of charge for non-commercial research use only under the terms of the Creative Commons Attribution Noncommercial License: http://creativecommons.org/licenses/by-nc-sa/4.0/
+The DALI is provided for educational purposes only and the material contained in them should not be used for any commercial purpose without the express permission of the copyright holders.
